@@ -104,7 +104,7 @@ class _InputVoucherPageState extends State<InputVoucherPage> {
                   const SizedBox(
                     width: 12,
                   ),
-                  Text('Tambah Voucher', style: TextStyle(color: Colors.green[700], fontSize: 16),)
+                  Text('Tambah Voucher', style: TextStyle(color: Colors.green[700], fontSize: 20),)
                 ],
               ),
             ),
