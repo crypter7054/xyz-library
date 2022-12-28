@@ -2,36 +2,14 @@ import 'package:flutter/material.dart';
 
 enum confirmation { harga_tetap, persen }
 
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Input Voucher',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const MyHomePage(title: 'Input Voucher Page'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
+class InputVoucherPage extends StatefulWidget {
+  const InputVoucherPage({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<InputVoucherPage> createState() => _InputVoucherPageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _InputVoucherPageState extends State<InputVoucherPage> {
 
   confirmation? pilih_jenis_voucher;
 
@@ -110,13 +88,8 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
       body: Center(
-
         child: ListView(
-
           // mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
@@ -124,25 +97,25 @@ class _MyHomePageState extends State<MyHomePage> {
               //   border: Border.all()
               // ),
               padding: const EdgeInsets.only(left: 10, right: 10),
-              margin: const EdgeInsets.only(left: 40, right: 40, top: 20, bottom: 20),
+              margin: const EdgeInsets.only(left: 40, right: 40, top: 30, bottom: 10),
               child: Row(
-                children: const [
-                  Icon(Icons.discount, color: Colors.blue),
-                  SizedBox(
+                children: [
+                  Icon(Icons.discount_outlined, color: Colors.green[700], size: 50,),
+                  const SizedBox(
                     width: 12,
                   ),
-                  Text('Tambah Voucher', style: TextStyle(color: Colors.blue, fontSize: 16),)
+                  Text('Tambah Voucher', style: TextStyle(color: Colors.green[700], fontSize: 16),)
                 ],
               ),
             ),
 
             Container(
               decoration: BoxDecoration(
-                border: Border.all(),
+                border: Border.all(color: Colors.black54),
                 borderRadius: BorderRadius.circular(12),
               ),
               padding: const EdgeInsets.only(top: 40, bottom: 40, left: 32, right: 32),
-              margin: const EdgeInsets.only(left: 40, right: 40),
+              margin: const EdgeInsets.only(left: 40, right: 40, bottom: 30),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -169,13 +142,14 @@ class _MyHomePageState extends State<MyHomePage> {
 
                   // RADIO BUTTON
                   Container(
-                    margin: EdgeInsets.fromLTRB(20, 20, 0, 0),
+                    margin: const EdgeInsets.fromLTRB(20, 20, 0, 0),
                     alignment: Alignment.topLeft,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Text("Jenis Voucher Diskon : "),
+                        const Text("Jenis Voucher Diskon : "),
                         Radio(
+                          fillColor: MaterialStateColor.resolveWith((states) => Colors.green.shade700),
                           value: confirmation.harga_tetap,
                           groupValue: pilih_jenis_voucher,
                           onChanged: (confirmation? value) {
@@ -184,8 +158,9 @@ class _MyHomePageState extends State<MyHomePage> {
                             });
                           },
                         ),
-                        Text('Harga Tetap'),
+                        const Text('Harga Tetap'),
                         Radio(
+                          fillColor: MaterialStateColor.resolveWith((states) => Colors.green.shade700),
                           value: confirmation.persen,
                           groupValue: pilih_jenis_voucher,
                           onChanged: (confirmation? value) {
@@ -194,7 +169,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             });
                           },
                         ),
-                        Text('Persen'),
+                        const Text('Persen'),
                       ],
                     ),
                   ),
@@ -216,9 +191,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
                   //CHECKBOX
                   Container(
-                    margin: EdgeInsets.fromLTRB(20, 20, 0, 0),
+                    margin: const EdgeInsets.fromLTRB(20, 20, 0, 0),
                     alignment: Alignment.topLeft,
-                    child: Text("Pembayaran"),
+                    child: const Text("Pembayaran"),
                   ),
 
                   Container(
@@ -236,19 +211,20 @@ class _MyHomePageState extends State<MyHomePage> {
                         Column(
                           children: availableHobbies.map((hobby){
                             return CheckboxListTile(
-                                value: hobby["isChecked"],
-                                title: Text(
-                                  hobby["name"],
-                                  style: const TextStyle(
-                                      color: Colors.black54,
-                                      fontStyle: FontStyle.italic
-                                  ),
+                              activeColor: Colors.green[700],
+                              value: hobby["isChecked"],
+                              title: Text(
+                                hobby["name"],
+                                style: const TextStyle(
+                                    color: Colors.black54,
+                                    fontStyle: FontStyle.italic
                                 ),
-                                onChanged: (newValue){
-                                  setState(() {
-                                    hobby["isChecked"] = newValue;
-                                  });
+                              ),
+                              onChanged: (newValue){
+                                setState(() {
+                                  hobby["isChecked"] = newValue;
                                 });
+                              });
                           }).toList(),
                         ),
                         Wrap(
@@ -256,7 +232,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             if (hobby["isChecked"] == true){
                               return Card(
                                 elevation: 1,
-                                color: Colors.blue,
+                                color: Colors.green[700],
                                 margin: const EdgeInsets.only(left: 10, right: 10, top: 4, bottom: 4),
                                 child: Padding(
                                   padding: const EdgeInsets.all(10),
@@ -277,7 +253,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
 
                   Container(
-                    padding: EdgeInsets.fromLTRB(20, 20, 0, 0),
+                    padding: const EdgeInsets.fromLTRB(20, 20, 0, 0),
                   ),
                   ListTile(
                     title: TextFormField(
@@ -302,10 +278,27 @@ class _MyHomePageState extends State<MyHomePage> {
                       readOnly: true,  //set it true, so that user will not able to edit text
                       onTap: () async {
                         DateTime? pickedDate = await showDatePicker(
-                            context: context,
-                            initialDate: DateTime.now(),
-                            firstDate: DateTime(2000), //DateTime.now() - not to allow to choose before today.
-                            lastDate: DateTime(2100)
+                          builder: (context, child) {
+                            return Theme(
+                              data: Theme.of(context).copyWith(
+                                colorScheme: ColorScheme.light(
+                                  primary: Colors.green.shade700, // header background color
+                                  onPrimary: Colors.white, // header text color
+                                  onSurface: Colors.black, // body text color
+                                ),
+                                textButtonTheme: TextButtonThemeData(
+                                  style: TextButton.styleFrom(
+                                    foregroundColor: Colors.green[700], // button text color
+                                  ),
+                                ),
+                              ),
+                              child: child!,
+                            );
+                          },
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(2000), //DateTime.now() - not to allow to choose before today.
+                          lastDate: DateTime(2100)
                         );
 
                         if(pickedDate != null ){
@@ -331,15 +324,15 @@ class _MyHomePageState extends State<MyHomePage> {
                           OutlinedButton(
                             style: OutlinedButton.styleFrom(
                                 padding: const EdgeInsets.all(18),
-                                side: const BorderSide(
-                                    color: Colors.blue
+                                side: BorderSide(
+                                    color: (Colors.green[700])!
                                 )
                             ),
                             onPressed: (){
                               setState(() {
                               });
                             },
-                            child: const Text('Batal'),
+                            child: Text('Batal', style: TextStyle(color: Colors.green[700]),),
                           ),
                           const SizedBox(
                             width: 10,
@@ -347,7 +340,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           TextButton(
                             style: TextButton.styleFrom(
                                 foregroundColor: Colors.white,
-                                backgroundColor: Colors.blue,
+                                backgroundColor: Colors.green[700],
                                 padding: const EdgeInsets.all(18),
                                 textStyle: const TextStyle(
                                     color: Colors.white,
