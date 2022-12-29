@@ -8,6 +8,19 @@ class InputPeminjamanPage extends StatefulWidget {
 }
 
 class _InputPeminjamanPageState extends State<InputPeminjamanPage> {
+
+  // text editing controller untuk input tanggal
+  TextEditingController tanggalpeminjaman = TextEditingController();
+  TextEditingController tanggalpengembalian = TextEditingController();
+
+  // state awal
+  @override
+  void initState() {
+    tanggalpeminjaman.text = ""; //set the initial value of text field
+    tanggalpengembalian.text = "";
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,20 +85,57 @@ class _InputPeminjamanPageState extends State<InputPeminjamanPage> {
                       ),
                     ),
                   ),
+
+                  // DATE FIELD
                   ListTile(
-                    title: TextFormField(
+                    title: TextField(
+                      controller: tanggalpeminjaman, //editing controller of this TextField
                       decoration: const InputDecoration(
-                        labelText: 'Tanggal Peminjaman',
+                        suffixIcon: Icon(Icons.calendar_today), //icon of text field
+                        labelText: "Tanggal Peminjaman (hari/bulan/tahun)", //label text of field
                         border: OutlineInputBorder(),
                       ),
+                      readOnly: true,  //set it true, so that user will not able to edit text
+                      onTap: () async {
+                        DateTime? pickedDate = await showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime(2000), //DateTime.now() - not to allow to choose before today.
+                            lastDate: DateTime(2100)
+                        );
+
+                        if(pickedDate != null ){
+                          setState(() {
+                            tanggalpeminjaman.text = '${pickedDate.day}/${pickedDate.month}/${pickedDate.year}'; //set output date to TextField value.
+                          });
+                        }
+                      },
                     ),
                   ),
+
                   ListTile(
-                    title: TextFormField(
+                    title: TextField(
+                      controller: tanggalpengembalian, //editing controller of this TextField
                       decoration: const InputDecoration(
-                        labelText: 'Tanggal Pengembalian',
+                        suffixIcon: Icon(Icons.calendar_today), //icon of text field
+                        labelText: "Tanggal Peminjaman (hari/bulan/tahun)", //label text of field
                         border: OutlineInputBorder(),
                       ),
+                      readOnly: true,  //set it true, so that user will not able to edit text
+                      onTap: () async {
+                        DateTime? pickedDate = await showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime(2000), //DateTime.now() - not to allow to choose before today.
+                            lastDate: DateTime(2100)
+                        );
+
+                        if(pickedDate != null ){
+                          setState(() {
+                            tanggalpengembalian.text = '${pickedDate.day}/${pickedDate.month}/${pickedDate.year}'; //set output date to TextField value.
+                          });
+                        }
+                      },
                     ),
                   ),
 

@@ -8,8 +8,26 @@ class InputBookPage extends StatefulWidget {
 }
 
 class _InputBookPageState extends State<InputBookPage> {
+
+  String kategori_selected = "Fiksi";
+
   @override
   Widget build(BuildContext context) {
+
+    // DROPDOWN ITEM LIST
+    List<DropdownMenuItem<String>> kategori = [];
+    var itm1 = const DropdownMenuItem<String>(
+      value: "Fiksi",
+      child: Text("Fiksi"),
+    );
+    var itm2 = const DropdownMenuItem<String>(
+      value: "Sejarah",
+      child: Text("Sejarah"),
+    );
+    kategori.add(itm1);
+    kategori.add(itm2);
+
+
     return SingleChildScrollView(
       child: ConstrainedBox(
         constraints: BoxConstraints(
@@ -94,16 +112,29 @@ class _InputBookPageState extends State<InputBookPage> {
                         ),
                       ),
                     ),
+
+                    // DROPDOWN
                     ListTile(
-                      title: TextFormField(
+                      title: DropdownButtonFormField(
                         decoration: const InputDecoration(
                           labelText: 'Kategori',
                           border: OutlineInputBorder(),
                         ),
+                        value: kategori_selected,
+                        items: kategori,
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            if (newValue != null) {
+                              kategori_selected = newValue;
+                            }
+                          });
+                        },
                       ),
                     ),
+
                     ListTile(
                       title: TextFormField(
+                        maxLines: null,
                         decoration: const InputDecoration(
                           labelText: 'Deskripsi',
                           border: OutlineInputBorder(),
