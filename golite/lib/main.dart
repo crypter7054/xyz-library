@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:golite/navigationUser.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:animated_splash_screen/animated_splash_screen.dart';
 
-import 'Navigation.dart';
+import 'navigationAdmin.dart';
 
 void main() {
   runApp(const MyApp());
@@ -29,10 +29,76 @@ class MyApp extends StatelessWidget {
         ),
       ),
       debugShowCheckedModeBanner: false,
-      home: AnimatedSplashScreen(splash: Image.asset('logo_white.png'),duration: 3000,
-      splashTransition: SplashTransition.fadeTransition,
-      backgroundColor: Colors.white,
-      nextScreen: Navigation()),
+      home: const Role()
+    );
+  }
+}
+
+class Role extends StatelessWidget {
+  const Role({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset('logo.png'),
+            const SizedBox(height: 15,),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextButton.icon(
+                  onPressed: (){
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => NavigationAdmin()),
+                    );
+                  },
+                  icon: const Icon(
+                    Icons.person_pin_outlined,
+                  ),
+                  label: const Text('Admin'),
+                  style: TextButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      backgroundColor: Colors.green[700],
+                      padding: const EdgeInsets.all(18),
+                      textStyle: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 14
+                      )
+                  ),
+                ),
+                const SizedBox(width: 10,),
+                OutlinedButton.icon(
+                  onPressed: (){
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => NavigationUser()),
+                    );
+                  },
+                  icon: const Icon(
+                    Icons.group_outlined,
+                  ),
+                  label: Text('User', style: TextStyle(color: Colors.green[700]),),
+                  style: OutlinedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      foregroundColor: Colors.green[700],
+                      padding: const EdgeInsets.all(18),
+                      side: BorderSide(
+                          color: (Colors.green[700])!
+                      )
+                  ),
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+              ],
+            ),
+          ],
+        )
+      )
     );
   }
 }

@@ -116,7 +116,7 @@ class _InputReviewPageState extends State<InputReviewPage> {
                     ),
                     ListTile(
                       title: TextFormField(
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: 'Comment',
                           border: OutlineInputBorder(),
                         ),

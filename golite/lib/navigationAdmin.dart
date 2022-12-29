@@ -1,27 +1,25 @@
 import 'package:flutter/material.dart';
 
-import 'homePage.dart';
-import 'inputReviewPage.dart';
+import 'homePageAdmin.dart';
 import 'inputVoucherPage.dart';
+import 'main.dart';
 
 enum DrawerSections{
   home,
-  review,
-  inputReview,
   voucher,
   inputVoucher,
   updateVoucher,
 }
 
-class Navigation extends StatefulWidget {
+class NavigationAdmin extends StatefulWidget {
   var page;
-  Navigation({super.key, this.page});
+  NavigationAdmin({super.key, this.page});
 
   @override
-  State<Navigation> createState() => _NavigationState();
+  State<NavigationAdmin> createState() => _NavigationAdminState();
 }
 
-class _NavigationState extends State<Navigation> {
+class _NavigationAdminState extends State<NavigationAdmin> {
   var currentPage = DrawerSections.home;
   int notInput = 0;
 
@@ -30,17 +28,13 @@ class _NavigationState extends State<Navigation> {
     var container;
 
     if (currentPage == DrawerSections.home) {
-      container = const HomePage();
-    }else if (currentPage == DrawerSections.review) {
-      container = const InputReviewPage();
+      container = const HomePageAdmin();
     } else if (currentPage == DrawerSections.voucher) {
       container = const InputVoucherPage();
     }
 
     if (notInput == 0){
-      if (widget.page == DrawerSections.inputReview) {
-        // container = const InputReviewPage();
-      } else if (widget.page == DrawerSections.inputVoucher) {
+      if (widget.page == DrawerSections.inputVoucher) {
         // container = const InputVoucherPage();
       } else if (widget.page == DrawerSections.updateVoucher) {
         // container = const UpdateVoucherPage();
@@ -57,7 +51,7 @@ class _NavigationState extends State<Navigation> {
                   onPressed: (){
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => Navigation()),
+                      MaterialPageRoute(builder: (context) => NavigationAdmin()),
                     );
                   },
                   icon: Image.asset("logo_white_icon.png")
@@ -74,9 +68,39 @@ class _NavigationState extends State<Navigation> {
             children: [
               Padding(
                 padding: const EdgeInsets.fromLTRB(30, 25, 160, 20),
-                child: Image.asset('logo_white.png')
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Image.asset('logo_white.png'),
+                    const SizedBox(height: 5,),
+                    const Text("Admin", style: TextStyle(color: Colors.white, fontSize: 20),)
+                  ]
+                ) 
               ),
               MyDrawerList(),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(27, 360, 0, 0),
+                child: Column(
+                  children: [
+                    ElevatedButton.icon(
+                      onPressed: (){
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const Role()),
+                        );
+                      },
+                      icon: const Icon(Icons.logout_outlined),
+                      label: const Text("Keluar"),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        foregroundColor: Colors.green[700],
+                        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+                        elevation: 0
+                      ),
+                    )
+                  ],
+                )
+              )
             ],
           )
         )
@@ -91,9 +115,7 @@ class _NavigationState extends State<Navigation> {
         children: [
           menuItem(0, "Home", Icons.home_outlined,
               currentPage == DrawerSections.home ? true : false),
-          menuItem(1, "Review List", Icons.rate_review_outlined,
-              currentPage == DrawerSections.review ? true : false),
-          menuItem(2, "Voucher List", Icons.discount_outlined,
+          menuItem(1, "Voucher List", Icons.discount_outlined,
               currentPage == DrawerSections.voucher ? true : false),
         ],
       ),
@@ -111,9 +133,6 @@ class _NavigationState extends State<Navigation> {
               currentPage = DrawerSections.home;
               notInput = 1;
             } else if(id == 1){
-              currentPage = DrawerSections.review;
-              notInput = 1;
-            } else if(id == 2){
               currentPage = DrawerSections.voucher;
               notInput = 1;
             }

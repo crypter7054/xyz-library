@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+class HomePageAdmin extends StatelessWidget {
+  const HomePageAdmin({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -10,7 +10,8 @@ class HomePage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Image.asset('logo.png'),
-          const Text("Home", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20))
+          const SizedBox(height: 5,),
+          const Text("Admin", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20))
         ],
       ),
     );
