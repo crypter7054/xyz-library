@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
 import 'package:xyzlibrary/Navigation.dart';
-import 'package:xyzlibrary/inputPeminjamanPage.dart';
 
 class PeminjamanPage extends StatefulWidget {
   const PeminjamanPage({super.key});
@@ -61,7 +60,7 @@ class _PeminjamanPageState extends State<PeminjamanPage> {
                         )),
                       );
                     }, // Fill here for navigation.
-                    style: TextButton.styleFrom(backgroundColor: Colors.blue, padding: EdgeInsets.all(16)),
+                    style: TextButton.styleFrom(backgroundColor: Colors.blue, padding: const EdgeInsets.all(16)),
                     child: Row(
                       children: const [
                         Icon(Icons.add, color: Colors.white, size: 16,),
@@ -80,6 +79,7 @@ class _PeminjamanPageState extends State<PeminjamanPage> {
               margin: const EdgeInsets.only(left: 12, right: 12),
               child: PaginatedDataTable(
                   columns: _createColumn(),
+                  columnSpacing: 40,
                   source: _table,
                   sortAscending: _isSortAsc,
                   sortColumnIndex: _currentSortColumn,
@@ -91,13 +91,14 @@ class _PeminjamanPageState extends State<PeminjamanPage> {
 
   List<DataColumn> _createColumn() {
     return [
-      DataColumn(label: Text("#", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),),
-      DataColumn(label: Text("ISBN", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
-      DataColumn(label: Text("Judul Buku", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
-      DataColumn(label: Text("Nama Peminjam", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
-      DataColumn(label: Text("Tanggal Peminjaman", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
-      DataColumn(label: Text("Tanggal Pengembalian", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
-      DataColumn(label: Text("Status", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
+      const DataColumn(label: Text("#", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),),
+      const DataColumn(label: Text("ISBN", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
+      const DataColumn(label: Text("Judul Buku", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
+      const DataColumn(label: Text("Nama Peminjam", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
+      const DataColumn(label: Text("Tanggal Peminjaman", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
+      const DataColumn(label: Text("Tanggal Pengembalian", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
+      const DataColumn(label: Text("Status", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
+      const DataColumn(label: Text("")),
     ];
   }
 
@@ -166,6 +167,15 @@ class PeminjamanData extends DataTableSource {
       DataCell(Text(_books[index]['date_borrow'])),
       DataCell(Text(_books[index]['date_return'])),
       DataCell(Text(_books[index]['status'])),
+      DataCell(
+        TextButton(
+          onPressed: () {},
+          child: Text("Dikembalikan", style: TextStyle(color: Colors.white),),
+          style: ButtonStyle(
+            backgroundColor: MaterialStatePropertyAll<Color>(Colors.blue)
+          ),
+        )
+      ),
     ]);
   }
 

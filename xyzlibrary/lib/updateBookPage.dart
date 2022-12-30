@@ -52,7 +52,7 @@ class _UpdateBookPageState extends State<UpdateBookPage> {
 
               Container(
                 decoration: BoxDecoration(
-                  border: Border.all(),
+                  border: Border.all(color: Colors.black38,),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 padding: const EdgeInsets.only(top: 30, bottom: 30, left: 32, right: 32),

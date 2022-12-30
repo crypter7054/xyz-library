@@ -1,5 +1,7 @@
 // Input Member
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class InputMemberPage extends StatefulWidget {
   const InputMemberPage({super.key});
@@ -9,8 +11,30 @@ class InputMemberPage extends StatefulWidget {
 }
 
 class _InputMemberPageState extends State<InputMemberPage> {
+
+  String gender_selected = "";
+
   @override
   Widget build(BuildContext context) {
+
+    // DROPDOWN ITEM LIST
+    List<DropdownMenuItem<String>> gender = [];
+    var itm1 = DropdownMenuItem<String>(
+      value: "",
+      child: Text("Pilih Jenis Kelamin", style: TextStyle(color: Colors.grey.shade600),),
+    );
+    var itm2 = const DropdownMenuItem<String>(
+      value: "Laki-laki",
+      child: Text("Laki-laki"),
+    );
+    var itm3 = const DropdownMenuItem<String>(
+      value: "Perempuan",
+      child: Text("Perempuan"),
+    );
+    gender.add(itm1);
+    gender.add(itm2);
+    gender.add(itm3);
+
     return Scaffold(
         body: Column(
           children: [
@@ -30,7 +54,7 @@ class _InputMemberPageState extends State<InputMemberPage> {
 
             Container(
               decoration: BoxDecoration(
-                border: Border.all(),
+                border: Border.all(color: Colors.black38,),
                 borderRadius: BorderRadius.circular(12),
               ),
               padding: const EdgeInsets.only(top: 30, bottom: 30, left: 32, right: 32),
@@ -40,14 +64,20 @@ class _InputMemberPageState extends State<InputMemberPage> {
                 children: [
                   ListTile(
                     title: TextFormField(
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly
+                      ],
                       decoration: const InputDecoration(
-                        labelText: 'KTP / NIK',
+                        labelText: 'NIK',
                         border: OutlineInputBorder(),
                       ),
                     ),
                   ),
                   ListTile(
                     title: TextFormField(
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(RegExp('[a-zA-Z]'))
+                      ],
                       decoration: const InputDecoration(
                         labelText: 'Nama Lengkap',
                         border: OutlineInputBorder(),
@@ -55,29 +85,22 @@ class _InputMemberPageState extends State<InputMemberPage> {
                     ),
                   ),
                   ListTile(
-                    title: TextFormField(
-                      decoration: const InputDecoration(
-                        labelText: 'Email',
-                        border: OutlineInputBorder(),
+                      title: DropdownButtonFormField(
+                        decoration: const InputDecoration(
+                          labelText: 'Jenis Kelamin',
+                          border: OutlineInputBorder(),
+                        ),
+                        value: gender_selected,
+                        items: gender,
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            if (newValue != null) {
+                              gender_selected = newValue;
+                            }
+                          });
+                        },
                       ),
                     ),
-                  ),
-                  ListTile(
-                    title: TextFormField(
-                      decoration: const InputDecoration(
-                        labelText: 'Nomor Telepon',
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                  ),
-                  ListTile(
-                    title: TextFormField(
-                      decoration: const InputDecoration(
-                        labelText: 'Jenis Kelamin',
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                  ),
                   ListTile(
                     title: TextFormField(
                       decoration: const InputDecoration(
@@ -85,6 +108,29 @@ class _InputMemberPageState extends State<InputMemberPage> {
                         border: OutlineInputBorder(),
                       ),
                     ),
+                  ),
+                  ListTile(
+                    title: TextFormField(
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly
+                      ],
+                      decoration: const InputDecoration(
+                        labelText: 'Nomor Telepon',
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                  ),
+                  ListTile(
+                    title: Form(
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      child:TextFormField(
+                        validator: (value) => EmailValidator.validate(value!) ? null : "Harap Masukan email yang benar",
+                        decoration: const InputDecoration(
+                          labelText: 'Email',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                    )
                   ),
 
                   Container(

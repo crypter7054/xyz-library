@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class InputBookPage extends StatefulWidget {
   const InputBookPage({super.key});
@@ -9,23 +10,28 @@ class InputBookPage extends StatefulWidget {
 
 class _InputBookPageState extends State<InputBookPage> {
 
-  String kategori_selected = "Fiksi";
+  String kategori_selected = "";
 
   @override
   Widget build(BuildContext context) {
 
     // DROPDOWN ITEM LIST
     List<DropdownMenuItem<String>> kategori = [];
-    var itm1 = const DropdownMenuItem<String>(
+    var itm1 = DropdownMenuItem<String>(
+      value: "",
+      child: Text("Pilih Kategori", style: TextStyle(color: Colors.grey.shade600),),
+    );
+    var itm2 = const DropdownMenuItem<String>(
       value: "Fiksi",
       child: Text("Fiksi"),
     );
-    var itm2 = const DropdownMenuItem<String>(
+    var itm3 = const DropdownMenuItem<String>(
       value: "Sejarah",
       child: Text("Sejarah"),
     );
     kategori.add(itm1);
     kategori.add(itm2);
+    kategori.add(itm3);
 
 
     return SingleChildScrollView(
@@ -34,7 +40,7 @@ class _InputBookPageState extends State<InputBookPage> {
           minHeight: MediaQuery.of(context).size.height
         ),
         child: Padding(
-          padding: EdgeInsets.only(bottom: 30),
+          padding: const EdgeInsets.only(bottom: 30),
           child: Column(
             children: [
               Container(
@@ -56,7 +62,7 @@ class _InputBookPageState extends State<InputBookPage> {
 
               Container(
                 decoration: BoxDecoration(
-                  border: Border.all(),
+                  border: Border.all(color: Colors.black38,),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 padding: const EdgeInsets.only(top: 30, bottom: 30, left: 32, right: 32),
@@ -66,14 +72,9 @@ class _InputBookPageState extends State<InputBookPage> {
                   children: [
                     ListTile(
                       title: TextFormField(
-                        decoration: const InputDecoration(
-                          labelText: 'Judul',
-                          border: OutlineInputBorder(),
-                        ),
-                      ),
-                    ),
-                    ListTile(
-                      title: TextFormField(
+                        inputFormatters: [
+                          FilteringTextInputFormatter.deny(RegExp('[a-zA-Z]')),
+                        ],
                         decoration: const InputDecoration(
                           labelText: 'ISBN',
                           border: OutlineInputBorder(),
@@ -83,37 +84,11 @@ class _InputBookPageState extends State<InputBookPage> {
                     ListTile(
                       title: TextFormField(
                         decoration: const InputDecoration(
-                          labelText: 'Tahun Terbit',
+                          labelText: 'Judul',
                           border: OutlineInputBorder(),
                         ),
                       ),
                     ),
-                    ListTile(
-                      title: TextFormField(
-                        decoration: const InputDecoration(
-                          labelText: 'Jumlah Buku',
-                          border: OutlineInputBorder(),
-                        ),
-                      ),
-                    ),
-                    ListTile(
-                      title: TextFormField(
-                        decoration: const InputDecoration(
-                          labelText: 'Penulis',
-                          border: OutlineInputBorder(),
-                        ),
-                      ),
-                    ),
-                    ListTile(
-                      title: TextFormField(
-                        decoration: const InputDecoration(
-                          labelText: 'Penerbit',
-                          border: OutlineInputBorder(),
-                        ),
-                      ),
-                    ),
-
-                    // DROPDOWN
                     ListTile(
                       title: DropdownButtonFormField(
                         decoration: const InputDecoration(
@@ -131,7 +106,44 @@ class _InputBookPageState extends State<InputBookPage> {
                         },
                       ),
                     ),
-
+                    ListTile(
+                      title: TextFormField(
+                        decoration: const InputDecoration(
+                          labelText: 'Penerbit',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                    ),
+                    ListTile(
+                      title: TextFormField(
+                        decoration: const InputDecoration(
+                          labelText: 'Penulis',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                    ),
+                    ListTile(
+                      title: TextFormField(
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                        ],
+                        decoration: const InputDecoration(
+                          labelText: 'Tahun Terbit',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                    ),
+                    ListTile(
+                      title: TextFormField(
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                        ],
+                        decoration: const InputDecoration(
+                          labelText: 'Jumlah Buku',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                    ),
                     ListTile(
                       title: TextFormField(
                         maxLines: null,

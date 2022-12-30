@@ -3,8 +3,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
 
-
 import 'Navigation.dart';
+
+enum OptionItem { ubah, hapus }
 
 class MemberPage extends StatefulWidget {
   const MemberPage({super.key});
@@ -14,6 +15,8 @@ class MemberPage extends StatefulWidget {
 }
 
 class _MemberPageState extends State<MemberPage> {
+
+  OptionItem? selectedOption;
 
   // Table.
   final DataTableSource _table = MemberData();
@@ -62,7 +65,7 @@ class _MemberPageState extends State<MemberPage> {
                         )),
                       );
                     }, // Fill here for navigation.
-                    style: TextButton.styleFrom(backgroundColor: Colors.blue, padding: EdgeInsets.all(16)),
+                    style: TextButton.styleFrom(backgroundColor: Colors.blue, padding: const EdgeInsets.all(16)),
                     child: Row(
                       children: const [
                         Icon(Icons.add, color: Colors.white, size: 16,),
@@ -92,14 +95,14 @@ class _MemberPageState extends State<MemberPage> {
 
   List<DataColumn> _createColumn() {
     return [
-      DataColumn(label: Text("#", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
-      DataColumn(label: Text("KTP / NIK", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
-      DataColumn(label: Text("Nama Lengkap", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
-      DataColumn(label: Text("JK", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
-      DataColumn(label: Text("Alamat", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
-      DataColumn(label: Text("Nomor Telepon", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
-      DataColumn(label: Text("Email", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
-      DataColumn(label: Text("", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
+      const DataColumn(label: Text("#", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
+      const DataColumn(label: Text("NIK", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
+      const DataColumn(label: Text("Nama Lengkap", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
+      const DataColumn(label: Text("Jenis Kelamin", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
+      const DataColumn(label: Text("Alamat", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
+      const DataColumn(label: Text("Nomor Telepon", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
+      const DataColumn(label: Text("Email", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
+      const DataColumn(label: Text("", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
     ];
   }
 
@@ -143,106 +146,114 @@ class MemberData extends DataTableSource {
     {
       'id' : '3212150909090002',
       'name' : 'Techi',
-      'gender' : 'L',
+      'gender' : 'Laki-laki',
       'address' : 'Jl. Setiabudhi No. 132',
-      'phone' : '++6281234567890',
+      'phone' : '081234567890',
       'email' : 'techi@gmail.com',
+    },
+    {
+      'id' : '3212150909090003',
+      'name' : 'Techa',
+      'gender' : 'Perempuan',
+      'address' : 'Jl. Setiabudhi No. 133',
+      'phone' : '081234567891',
+      'email' : 'techa@gmail.com',
     },
     {
       'id' : '3212150909090002',
       'name' : 'Techi',
-      'gender' : 'L',
+      'gender' : 'Laki-laki',
       'address' : 'Jl. Setiabudhi No. 132',
-      'phone' : '++6281234567890',
+      'phone' : '081234567890',
       'email' : 'techi@gmail.com',
+    },
+    {
+      'id' : '3212150909090003',
+      'name' : 'Techa',
+      'gender' : 'Perempuan',
+      'address' : 'Jl. Setiabudhi No. 133',
+      'phone' : '081234567891',
+      'email' : 'techa@gmail.com',
     },
     {
       'id' : '3212150909090002',
       'name' : 'Techi',
-      'gender' : 'L',
+      'gender' : 'Laki-laki',
       'address' : 'Jl. Setiabudhi No. 132',
-      'phone' : '++6281234567890',
+      'phone' : '081234567890',
       'email' : 'techi@gmail.com',
+    },
+    {
+      'id' : '3212150909090003',
+      'name' : 'Techa',
+      'gender' : 'Perempuan',
+      'address' : 'Jl. Setiabudhi No. 133',
+      'phone' : '081234567891',
+      'email' : 'techa@gmail.com',
     },
     {
       'id' : '3212150909090002',
       'name' : 'Techi',
-      'gender' : 'L',
+      'gender' : 'Laki-laki',
       'address' : 'Jl. Setiabudhi No. 132',
-      'phone' : '++6281234567890',
+      'phone' : '081234567890',
       'email' : 'techi@gmail.com',
+    },
+    {
+      'id' : '3212150909090003',
+      'name' : 'Techa',
+      'gender' : 'Perempuan',
+      'address' : 'Jl. Setiabudhi No. 133',
+      'phone' : '081234567891',
+      'email' : 'techa@gmail.com',
     },
     {
       'id' : '3212150909090002',
       'name' : 'Techi',
-      'gender' : 'L',
+      'gender' : 'Laki-laki',
       'address' : 'Jl. Setiabudhi No. 132',
-      'phone' : '++6281234567890',
+      'phone' : '081234567890',
       'email' : 'techi@gmail.com',
+    },
+    {
+      'id' : '3212150909090003',
+      'name' : 'Techa',
+      'gender' : 'Perempuan',
+      'address' : 'Jl. Setiabudhi No. 133',
+      'phone' : '081234567891',
+      'email' : 'techa@gmail.com',
     },
     {
       'id' : '3212150909090002',
       'name' : 'Techi',
-      'gender' : 'L',
+      'gender' : 'Laki-laki',
       'address' : 'Jl. Setiabudhi No. 132',
-      'phone' : '++6281234567890',
+      'phone' : '081234567890',
       'email' : 'techi@gmail.com',
+    },
+    {
+      'id' : '3212150909090003',
+      'name' : 'Techa',
+      'gender' : 'Perempuan',
+      'address' : 'Jl. Setiabudhi No. 133',
+      'phone' : '081234567891',
+      'email' : 'techa@gmail.com',
     },
     {
       'id' : '3212150909090002',
       'name' : 'Techi',
-      'gender' : 'L',
+      'gender' : 'Laki-laki',
       'address' : 'Jl. Setiabudhi No. 132',
-      'phone' : '++6281234567890',
+      'phone' : '081234567890',
       'email' : 'techi@gmail.com',
     },
     {
-      'id' : '3212150909090002',
-      'name' : 'Techi',
-      'gender' : 'L',
-      'address' : 'Jl. Setiabudhi No. 132',
-      'phone' : '++6281234567890',
-      'email' : 'techi@gmail.com',
-    },
-    {
-      'id' : '3212150909090002',
-      'name' : 'Techi',
-      'gender' : 'L',
-      'address' : 'Jl. Setiabudhi No. 132',
-      'phone' : '++6281234567890',
-      'email' : 'techi@gmail.com',
-    },
-    {
-      'id' : '3212150909090002',
-      'name' : 'Techi',
-      'gender' : 'L',
-      'address' : 'Jl. Setiabudhi No. 132',
-      'phone' : '++6281234567890',
-      'email' : 'techi@gmail.com',
-    },
-    {
-      'id' : '3212150909090002',
-      'name' : 'Techi',
-      'gender' : 'L',
-      'address' : 'Jl. Setiabudhi No. 132',
-      'phone' : '++6281234567890',
-      'email' : 'techi@gmail.com',
-    },
-    {
-      'id' : '3212150909090002',
-      'name' : 'Techi',
-      'gender' : 'L',
-      'address' : 'Jl. Setiabudhi No. 132',
-      'phone' : '++6281234567890',
-      'email' : 'techi@gmail.com',
-    },
-    {
-      'id' : '3212150909090002',
-      'name' : 'Techi',
-      'gender' : 'L',
-      'address' : 'Jl. Setiabudhi No. 132',
-      'phone' : '++6281234567890',
-      'email' : 'techi@gmail.com',
+      'id' : '3212150909090003',
+      'name' : 'Techa',
+      'gender' : 'Perempuan',
+      'address' : 'Jl. Setiabudhi No. 133',
+      'phone' : '081234567891',
+      'email' : 'techa@gmail.com',
     },
   ];
 
@@ -256,10 +267,41 @@ class MemberData extends DataTableSource {
       DataCell(Text(_books[index]['address'])),
       DataCell(Text(_books[index]['phone'])),
       DataCell(Text(_books[index]['email'])),
-      DataCell(IconButton(
-        icon: Icon(Icons.more_vert, color: Colors.black,),
-        onPressed: () {},
-      )),
+      DataCell(
+        PopupMenuButton<OptionItem>(
+          shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(6.0))
+          ),
+          itemBuilder: (BuildContext context) {
+            return [
+              PopupMenuItem <OptionItem> (
+                value: OptionItem.ubah,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: const [
+                    Icon(Icons.edit_note_outlined, color: Colors.blue,),
+                    SizedBox(width: 5,),
+                    Text('Ubah', style: TextStyle(color: Colors.blue)),
+                  ]
+                ),
+              ),
+              PopupMenuItem <OptionItem> (
+                value: OptionItem.hapus,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: const [
+                    Icon(Icons.delete_outlined, color: Colors.red,),
+                    SizedBox(width: 5,),
+                    Text('Hapus', style: TextStyle(color: Colors.red)),
+                  ]
+                ),
+              ),
+            ];
+          }
+        )
+      ),
     ]);
   }
 

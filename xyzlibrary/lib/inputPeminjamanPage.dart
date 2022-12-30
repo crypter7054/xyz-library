@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:searchfield/searchfield.dart';
 
 class InputPeminjamanPage extends StatefulWidget {
   const InputPeminjamanPage({super.key});
@@ -12,6 +13,11 @@ class _InputPeminjamanPageState extends State<InputPeminjamanPage> {
   // text editing controller untuk input tanggal
   TextEditingController tanggalpeminjaman = TextEditingController();
   TextEditingController tanggalpengembalian = TextEditingController();
+
+  String? _selectedISBN;
+  String? _selectedJudul;
+  String? _selectedNIK;
+  String? _selectedNama;
 
   // state awal
   @override
@@ -45,7 +51,7 @@ class _InputPeminjamanPageState extends State<InputPeminjamanPage> {
 
             Container(
               decoration: BoxDecoration(
-                border: Border.all(),
+                border: Border.all(color: Colors.black38,),
                 borderRadius: BorderRadius.circular(12),
               ),
               padding: const EdgeInsets.only(top: 30, bottom: 30, left: 32, right: 32),
@@ -54,36 +60,140 @@ class _InputPeminjamanPageState extends State<InputPeminjamanPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   ListTile(
-                    title: TextFormField(
-                      decoration: const InputDecoration(
-                        labelText: 'Nomor Panggil',
+                    title: SearchField(
+                      hint: "ISBN",
+                      searchInputDecoration: const InputDecoration(
                         border: OutlineInputBorder(),
                       ),
-                    ),
+                      itemHeight: 50,
+                      maxSuggestionsInViewPort: 6,
+                      suggestionsDecoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 2,
+                            blurRadius: 5,
+                            offset: const Offset(0, 3),
+                          )
+                        ]
+                      ),
+                      onTap: (value) {
+                        setState(() {
+                          _selectedISBN = value;
+                        });
+                      },
+                      suggestions:  const [
+                        '978-602-8755-00-9',
+                        '978-602-8755-01-6',
+                        '978-602-8755-02-3',
+                        '978-602-8519-93-4',
+                        '978-602-8519-94-2',
+                      ],
+                    )
                   ),
                   ListTile(
-                    title: TextFormField(
-                      decoration: const InputDecoration(
-                        labelText: 'Judul Buku',
+                    title: SearchField(
+                      hint: "Judul Buku",
+                      searchInputDecoration: const InputDecoration(
                         border: OutlineInputBorder(),
                       ),
-                    ),
+                      itemHeight: 50,
+                      maxSuggestionsInViewPort: 6,
+                      suggestionsDecoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 2,
+                            blurRadius: 5,
+                            offset: const Offset(0, 3),
+                          )
+                        ]
+                      ),
+                      onTap: (value) {
+                        setState(() {
+                          _selectedJudul = value;
+                        });
+                      },
+                      suggestions:  const [
+                        'Sejarah Karawitan II',
+                        'Bahasa Indonesia I',
+                        'Antropologi Seni',
+                        'Komputer Grafis I',
+                        'Animasi I',
+                      ],
+                    )
                   ),
                   ListTile(
-                    title: TextFormField(
-                      decoration: const InputDecoration(
-                        labelText: 'NIK Peminjam',
+                    title: SearchField(
+                      hint: "NIK Peminjam",
+                      searchInputDecoration: const InputDecoration(
                         border: OutlineInputBorder(),
                       ),
-                    ),
+                      itemHeight: 50,
+                      maxSuggestionsInViewPort: 6,
+                      suggestionsDecoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 2,
+                            blurRadius: 5,
+                            offset: const Offset(0, 3),
+                          )
+                        ]
+                      ),
+                      onTap: (value) {
+                        setState(() {
+                          _selectedNIK = value;
+                        });
+                      },
+                      suggestions:  const [
+                        '3252140102050009',
+                        '33522402050100010',
+                        '3292150708110011',
+                        '3202090105990012',
+                        '3092900101010001',
+                      ],
+                    )
                   ),
                   ListTile(
-                    title: TextFormField(
-                      decoration: const InputDecoration(
-                        labelText: 'Nama Peminjam',
+                    title: SearchField(
+                      hint: "Nama Peminjam",
+                      searchInputDecoration: const InputDecoration(
                         border: OutlineInputBorder(),
                       ),
-                    ),
+                      itemHeight: 50,
+                      maxSuggestionsInViewPort: 6,
+                      suggestionsDecoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 2,
+                            blurRadius: 5,
+                            offset: const Offset(0, 3),
+                          )
+                        ]
+                      ),
+                      onTap: (value) {
+                        setState(() {
+                          _selectedNama = value;
+                        });
+                      },
+                      suggestions:  const [
+                        'Tono',
+                        'Budi',
+                        'Susanti',
+                        'Wati',
+                        'Wawan',
+                      ],
+                    )
                   ),
 
                   // DATE FIELD
@@ -118,7 +228,7 @@ class _InputPeminjamanPageState extends State<InputPeminjamanPage> {
                       controller: tanggalpengembalian, //editing controller of this TextField
                       decoration: const InputDecoration(
                         suffixIcon: Icon(Icons.calendar_today), //icon of text field
-                        labelText: "Tanggal Peminjaman (hari/bulan/tahun)", //label text of field
+                        labelText: "Tanggal Pengembalian (hari/bulan/tahun)", //label text of field
                         border: OutlineInputBorder(),
                       ),
                       readOnly: true,  //set it true, so that user will not able to edit text

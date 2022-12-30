@@ -3,7 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
 import 'package:xyzlibrary/Navigation.dart';
-import 'package:xyzlibrary/inputBookPage.dart';
+
+enum OptionItem { detail, ubah, hapus }
 
 class BookPage extends StatefulWidget {
   const BookPage({super.key});
@@ -14,52 +15,54 @@ class BookPage extends StatefulWidget {
 
 class _BookPageState extends State<BookPage> {
 
+  OptionItem? selectedOption;
+
   final List<Map> _books = [
     {
+      'isbn' : '333-444-5555-66-1',
       'title' : 'Pemrograman Dasar',
       'category' : 'Pemrograman',
-      'isbn' : '333-444-5555-66-1',
       'publisher' : 'Gramedia',
-      'year' : '2011',
       'author' : 'Techi',
+      'year' : '2011',
       'total' : '112',
     },
     {
+      'isbn' : '333-444-5555-66-1',
       'title' : 'Pemrograman Dasar',
       'category' : 'Pemrograman',
-      'isbn' : '333-444-5555-66-1',
       'publisher' : 'Gramedia',
-      'year' : '2011',
       'author' : 'Techi',
+      'year' : '2011',
       'total' : '112',
     },
     {
+      'isbn' : '333-444-5555-66-1',
       'title' : 'Pemrograman Dasar',
       'category' : 'Pemrograman',
-      'isbn' : '333-444-5555-66-1',
       'publisher' : 'Gramedia',
-      'year' : '2011',
       'author' : 'Techi',
+      'year' : '2011',
       'total' : '112',
     },
     {
+      'isbn' : '333-444-5555-66-1',
       'title' : 'Pemrograman Dasar',
       'category' : 'Pemrograman',
-      'isbn' : '333-444-5555-66-1',
       'publisher' : 'Gramedia',
-      'year' : '2011',
       'author' : 'Techi',
+      'year' : '2011',
       'total' : '112',
     },
     {
+      'isbn' : '333-444-5555-66-1',
       'title' : 'Pemrograman Dasar',
       'category' : 'Pemrograman',
-      'isbn' : '333-444-5555-66-1',
       'publisher' : 'Gramedia',
-      'year' : '2011',
       'author' : 'Techi',
+      'year' : '2011',
       'total' : '112',
-    }
+    },
   ];
 
   // Table.
@@ -109,7 +112,7 @@ class _BookPageState extends State<BookPage> {
                       )),
                     );
                   }, // Fill here for navigation.
-                  style: TextButton.styleFrom(backgroundColor: Colors.blue, padding: EdgeInsets.all(16)),
+                  style: TextButton.styleFrom(backgroundColor: Colors.blue, padding: const EdgeInsets.all(16)),
                   child: Row(
                     children: const [
                       Icon(Icons.add, color: Colors.white, size: 16,),
@@ -138,15 +141,15 @@ class _BookPageState extends State<BookPage> {
   }
   List<DataColumn> _createColumn() {
     return [
-      DataColumn(label: Text("#", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)), onSort: _onSort),
-      DataColumn(label: Text("Judul", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
-      DataColumn(label: Text("Kategori", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
-      DataColumn(label: Text("ISBN", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
-      DataColumn(label: Text("Penerbit", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
-      DataColumn(label: Text("Tahun Terbit", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
-      DataColumn(label: Text("Penulis", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
-      DataColumn(label: Text("Jumlah Buku", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
-      DataColumn(label: Text("", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
+      DataColumn(label: const Text("#", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)), onSort: _onSort),
+      const DataColumn(label: Text("ISBN", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
+      const DataColumn(label: Text("Judul", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
+      const DataColumn(label: Text("Kategori", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
+      const DataColumn(label: Text("Penerbit", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
+      const DataColumn(label: Text("Penulis", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
+      const DataColumn(label: Text("Tahun Terbit", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
+      const DataColumn(label: Text("Jumlah Buku", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
+      const DataColumn(label: Text("", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
     ];
   }
 
@@ -154,12 +157,12 @@ class _BookPageState extends State<BookPage> {
     int idx = 1;
     return _books.mapIndexed((index, book) => DataRow(cells: [
       DataCell(Text((index + 1).toString())),
+      DataCell(Text(book['isbn'])),
       DataCell(Text(book['title'])),
       DataCell(Text(book['category'])),
-      DataCell(Text(book['isbn'])),
       DataCell(Text(book['publisher'])),
-      DataCell(Text(book['year'])),
       DataCell(Text(book['author'])),
+      DataCell(Text(book['year'])),
       DataCell(Text(book['total'])),
     ],
       selected: _selected[index],
@@ -188,67 +191,110 @@ class _BookPageState extends State<BookPage> {
 class BookData extends DataTableSource {
   final List<Map> _books = [
     {
+      'isbn' : '333-444-5555-66-1',
       'title' : 'Pemrograman Dasar',
       'category' : 'Pemrograman',
-      'isbn' : '333-444-5555-66-1',
       'publisher' : 'Gramedia',
-      'year' : '2011',
       'author' : 'Techi',
+      'year' : '2011',
       'total' : '112',
     },
     {
+      'isbn' : '333-444-5555-66-1',
       'title' : 'Pemrograman Dasar',
       'category' : 'Pemrograman',
-      'isbn' : '333-444-5555-66-1',
       'publisher' : 'Gramedia',
-      'year' : '2011',
       'author' : 'Techi',
+      'year' : '2011',
       'total' : '112',
     },
     {
+      'isbn' : '333-444-5555-66-1',
       'title' : 'Pemrograman Dasar',
       'category' : 'Pemrograman',
-      'isbn' : '333-444-5555-66-1',
       'publisher' : 'Gramedia',
-      'year' : '2011',
       'author' : 'Techi',
+      'year' : '2011',
       'total' : '112',
     },
     {
+      'isbn' : '333-444-5555-66-1',
       'title' : 'Pemrograman Dasar',
       'category' : 'Pemrograman',
-      'isbn' : '333-444-5555-66-1',
       'publisher' : 'Gramedia',
-      'year' : '2011',
       'author' : 'Techi',
+      'year' : '2011',
       'total' : '112',
     },
     {
+      'isbn' : '333-444-5555-66-1',
       'title' : 'Pemrograman Dasar',
       'category' : 'Pemrograman',
-      'isbn' : '333-444-5555-66-1',
       'publisher' : 'Gramedia',
-      'year' : '2011',
       'author' : 'Techi',
+      'year' : '2011',
       'total' : '112',
-    }
+    },
   ];
 
   @override
   DataRow? getRow(int index) {
     return DataRow.byIndex(index: index, cells: [
       DataCell(Text((index + 1).toString())),
+      DataCell(Text(_books[index]['isbn'])),
       DataCell(Text(_books[index]['title'])),
       DataCell(Text(_books[index]['category'])),
-      DataCell(Text(_books[index]['isbn'])),
       DataCell(Text(_books[index]['publisher'])),
-      DataCell(Text(_books[index]['year'])),
       DataCell(Text(_books[index]['author'])),
+      DataCell(Text(_books[index]['year'])),
       DataCell(Text(_books[index]['total'])),
-      DataCell(IconButton(
-        icon: Icon(Icons.more_vert, color: Colors.black,),
-        onPressed: () {},
-      )),
+      DataCell(
+        PopupMenuButton<OptionItem>(
+          shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(6.0))
+          ),
+          itemBuilder: (BuildContext context) {
+            return [
+              PopupMenuItem <OptionItem> (
+                value: OptionItem.detail,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: const [
+                    Icon(Icons.info_outlined, color: Colors.blue,),
+                    SizedBox(width: 5,),
+                    Text('Detail', style: TextStyle(color: Colors.blue)),
+                  ]
+                ),
+              ),
+              PopupMenuItem <OptionItem> (
+                value: OptionItem.ubah,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: const [
+                    Icon(Icons.edit_note_outlined, color: Colors.blue,),
+                    SizedBox(width: 5,),
+                    Text('Ubah', style: TextStyle(color: Colors.blue)),
+                  ]
+                ),
+              ),
+              PopupMenuItem <OptionItem> (
+                value: OptionItem.hapus,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: const [
+                    Icon(Icons.delete_outlined, color: Colors.red,),
+                    SizedBox(width: 5,),
+                    Text('Hapus', style: TextStyle(color: Colors.red)),
+                  ]
+                ),
+              ),
+            ];
+          }
+        )
+      ),
     ]);
   }
 
