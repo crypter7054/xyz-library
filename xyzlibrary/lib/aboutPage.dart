@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:xyzlibrary/customPaint.dart';
 
 class AboutPage extends StatelessWidget {
   const AboutPage({super.key});
@@ -9,16 +10,25 @@ class AboutPage extends StatelessWidget {
     return Scaffold(
       body: Container(
         alignment: Alignment.center,
+        // decoration: BoxDecoration(
+        //   border: Border.all()
+        // ),
         margin: const EdgeInsets.only(top: 60, left: 100, right: 100),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
+            Container(
+              alignment: Alignment.center,
+              margin: const EdgeInsets.only(bottom: 15),
+              child: const LogoView(),
+            ),
+
             const Text("Tentang Kami", style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),),
 
             Container(
-              margin: const EdgeInsets.only(top: 30),
+              margin: const EdgeInsets.only(top: 30, left: 50, right: 50),
               child: const Flexible(
-                child: Text("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus vehicula, neque mollis euismod faucibus, massa mi iaculis erat, eu finibus velit turpis non eros. Phasellus placerat lacus nec mauris lobortis, luctus sodales nisl ullamcorper. Suspendisse euismod pellentesque commodo. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aliquam placerat erat faucibus, volutpat elit eu, tincidunt elit. Integer a tristique tellus, sed sollicitudin mi. Fusce viverra nisl in tellus suscipit tincidunt. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Curabitur justo mauris, efficitur ultricies auctor ac, iaculis eget tortor.",
+                child: Text("XYZ library adalah aplikasi mobile admin-side(sisi-admin) yang dikembangkan untuk memudahkan perpustakaan, lembaga atau organisasi sejenis yang menyediakan fasilitas peminjaman buku untuk dapat melakukan pendataan peminjaman dengan baik. Aplikasi ini menawarkan beberapa fitur yang memungkinkan pengguna(admin) untuk melakukan pendataan meliputi create data, read data, update data, dan delete data. Pertama terdapat fitur pendataan buku yang memungkinkan pengguna membaca data buku, menambahkan data buku baru, dan mengubah data buku yang sudah ada. Kemudian, terdapat fitur kedua yaitu peminjaman yang memungkinkan pengguna untuk menambahkan data peminjaman buku. Terakhir, terdapat fitur pendataan member yang berfungsi untuk mendata anggota yang melakukan peminjaman buku, pengguna dapat menambahkan data anggota baru, serta mengubah dan menghapus data anggota yang sudah ada.",
                   style: TextStyle(fontSize: 16),
                   textAlign: TextAlign.center,
                 ),
