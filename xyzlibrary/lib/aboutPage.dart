@@ -7,19 +7,17 @@ class AboutPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    return Scaffold(
-      body: Container(
-        alignment: Alignment.center,
-        // decoration: BoxDecoration(
-        //   border: Border.all()
-        // ),
-        margin: const EdgeInsets.only(top: 60, left: 100, right: 100),
+    return SingleChildScrollView(
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+            minHeight: MediaQuery.of(context).size.height
+        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Container(
               alignment: Alignment.center,
-              margin: const EdgeInsets.only(bottom: 15),
+              margin: const EdgeInsets.only(bottom: 15, top: 30),
               child: const LogoView(),
             ),
 
