@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
 import 'package:xyzlibrary/Navigation.dart';
 
-enum OptionItem { detail, ubah, hapus }
-
 class BookPage extends StatefulWidget {
   const BookPage({super.key});
 
@@ -14,8 +12,6 @@ class BookPage extends StatefulWidget {
 }
 
 class _BookPageState extends State<BookPage> {
-
-  OptionItem? selectedOption;
 
   final List<Map> _books = [
     {
@@ -189,6 +185,7 @@ class _BookPageState extends State<BookPage> {
 }
 
 class BookData extends DataTableSource {
+
   final List<Map> _books = [
     {
       'isbn' : '333-444-5555-66-1',
@@ -248,53 +245,7 @@ class BookData extends DataTableSource {
       DataCell(Text(_books[index]['author'])),
       DataCell(Text(_books[index]['year'])),
       DataCell(Text(_books[index]['total'])),
-      DataCell(
-        PopupMenuButton<OptionItem>(
-          shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(6.0))
-          ),
-          itemBuilder: (BuildContext context) {
-            return [
-              PopupMenuItem <OptionItem> (
-                value: OptionItem.detail,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: const [
-                    Icon(Icons.info_outlined, color: Colors.blue,),
-                    SizedBox(width: 5,),
-                    Text('Detail', style: TextStyle(color: Colors.blue)),
-                  ]
-                ),
-              ),
-              PopupMenuItem <OptionItem> (
-                value: OptionItem.ubah,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: const [
-                    Icon(Icons.edit_note_outlined, color: Colors.blue,),
-                    SizedBox(width: 5,),
-                    Text('Ubah', style: TextStyle(color: Colors.blue)),
-                  ]
-                ),
-              ),
-              PopupMenuItem <OptionItem> (
-                value: OptionItem.hapus,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: const [
-                    Icon(Icons.delete_outlined, color: Colors.red,),
-                    SizedBox(width: 5,),
-                    Text('Hapus', style: TextStyle(color: Colors.red)),
-                  ]
-                ),
-              ),
-            ];
-          }
-        )
-      ),
+      DataCell(PopupMenu()),
     ]);
   }
 
@@ -306,4 +257,75 @@ class BookData extends DataTableSource {
 
   @override
   int get selectedRowCount => 0;
+}
+
+class PopupMenu extends StatefulWidget {
+  const PopupMenu({super.key});
+
+  @override
+  State<PopupMenu> createState() => _PopupMenuState();
+}
+
+class _PopupMenuState extends State<PopupMenu> {
+  var selectedOption = '';
+
+  @override
+  Widget build(BuildContext context) {
+    return PopupMenuButton(
+      onSelected: (value) {
+        setState(() {
+          selectedOption = value.toString();
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Navigation(
+              page: value.toString(),
+            )),
+          );
+        });
+      },
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(6.0))
+      ),
+      itemBuilder: (BuildContext context) {
+        return [
+          PopupMenuItem(
+            value: "detailBuku",
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: const [
+                Icon(Icons.info_outlined, color: Colors.blue,),
+                SizedBox(width: 5,),
+                Text('Detail', style: TextStyle(color: Colors.blue)),
+              ]
+            ),
+          ),
+          PopupMenuItem(
+            value: "updateBuku",
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: const [
+                Icon(Icons.edit_note_outlined, color: Colors.blue,),
+                SizedBox(width: 5,),
+                Text('Ubah', style: TextStyle(color: Colors.blue)),
+              ]
+            ),
+          ),
+          PopupMenuItem(
+            value: "deleteBuku",
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: const [
+                Icon(Icons.delete_outlined, color: Colors.red,),
+                SizedBox(width: 5,),
+                Text('Hapus', style: TextStyle(color: Colors.red)),
+              ]
+            ),
+          ),
+        ];
+      }
+    );
+  }
 }

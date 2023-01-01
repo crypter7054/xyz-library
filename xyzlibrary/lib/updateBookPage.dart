@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class UpdateBookPage extends StatefulWidget {
   const UpdateBookPage({super.key});
@@ -62,14 +63,9 @@ class _UpdateBookPageState extends State<UpdateBookPage> {
                   children: [
                     ListTile(
                       title: TextFormField(
-                        decoration: const InputDecoration(
-                          labelText: 'Judul',
-                          border: OutlineInputBorder(),
-                        ),
-                      ),
-                    ),
-                    ListTile(
-                      title: TextFormField(
+                        inputFormatters: [
+                          FilteringTextInputFormatter.deny(RegExp('[a-zA-Z]')),
+                        ],
                         decoration: const InputDecoration(
                           labelText: 'ISBN',
                           border: OutlineInputBorder(),
@@ -79,37 +75,11 @@ class _UpdateBookPageState extends State<UpdateBookPage> {
                     ListTile(
                       title: TextFormField(
                         decoration: const InputDecoration(
-                          labelText: 'Tahun Terbit',
+                          labelText: 'Judul',
                           border: OutlineInputBorder(),
                         ),
                       ),
                     ),
-                    ListTile(
-                      title: TextFormField(
-                        decoration: const InputDecoration(
-                          labelText: 'Jumlah Buku',
-                          border: OutlineInputBorder(),
-                        ),
-                      ),
-                    ),
-                    ListTile(
-                      title: TextFormField(
-                        decoration: const InputDecoration(
-                          labelText: 'Penulis',
-                          border: OutlineInputBorder(),
-                        ),
-                      ),
-                    ),
-                    ListTile(
-                      title: TextFormField(
-                        decoration: const InputDecoration(
-                          labelText: 'Penerbit',
-                          border: OutlineInputBorder(),
-                        ),
-                      ),
-                    ),
-
-                    // DROPDOWN
                     ListTile(
                       title: DropdownButtonFormField(
                         decoration: const InputDecoration(
@@ -127,7 +97,44 @@ class _UpdateBookPageState extends State<UpdateBookPage> {
                         },
                       ),
                     ),
-
+                    ListTile(
+                      title: TextFormField(
+                        decoration: const InputDecoration(
+                          labelText: 'Penerbit',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                    ),
+                    ListTile(
+                      title: TextFormField(
+                        decoration: const InputDecoration(
+                          labelText: 'Penulis',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                    ),
+                    ListTile(
+                      title: TextFormField(
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                        ],
+                        decoration: const InputDecoration(
+                          labelText: 'Tahun Terbit',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                    ),
+                    ListTile(
+                      title: TextFormField(
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                        ],
+                        decoration: const InputDecoration(
+                          labelText: 'Jumlah Buku',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                    ),
                     ListTile(
                       title: TextFormField(
                         maxLines: null,
@@ -178,7 +185,7 @@ class _UpdateBookPageState extends State<UpdateBookPage> {
                                 setState(() {
                                 });
                               },
-                              child: const Text('Submit'),
+                              child: const Text('Ubah'),
                             )
                           ],
                         )

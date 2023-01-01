@@ -289,7 +289,7 @@ class _InputPeminjamanPageState extends State<InputPeminjamanPage> {
                               setState(() {
                               });
                             },
-                            child: const Text('Submit'),
+                            child: const Text('Simpan'),
                           )
                         ],
                       )

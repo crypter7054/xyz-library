@@ -173,7 +173,7 @@ class _InputMemberPageState extends State<InputMemberPage> {
                               setState(() {
                               });
                             },
-                            child: const Text('Submit'),
+                            child: const Text('Simpan'),
                           )
                         ],
                       )

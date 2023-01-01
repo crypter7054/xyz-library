@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:xyzlibrary/aboutPage.dart';
 import 'package:xyzlibrary/bookPage.dart';
+import 'package:xyzlibrary/dashboard.dart';
 import 'package:xyzlibrary/detailBookPage.dart';
 import 'package:xyzlibrary/inputBookPage.dart';
 import 'package:xyzlibrary/inputPeminjamanPage.dart';
@@ -39,7 +40,7 @@ class _NavigationState extends State<Navigation> {
     var container;
 
     if (currentPage == DrawerSections.dashboard) {
-      container = const DetailBookPage();
+      container = const Dashboard();
     }else if (currentPage == DrawerSections.book) {
       container = const BookPage();
     } else if (currentPage == DrawerSections.peminjaman) {
@@ -58,6 +59,10 @@ class _NavigationState extends State<Navigation> {
       } else if (widget.page == DrawerSections.inputMember) {
         container = const InputMemberPage();
       } else if (widget.page == DrawerSections.updateBook) {
+        container = const UpdateBookPage();
+      } else if (widget.page == "detailBuku") {
+        container = const DetailBookPage();
+      } else if (widget.page == "updateBuku") {
         container = const UpdateBookPage();
       }
     }
