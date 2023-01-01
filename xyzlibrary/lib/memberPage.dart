@@ -1,11 +1,7 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:collection/collection.dart';
-
 import 'Navigation.dart';
 
-enum OptionItem { ubah, hapus }
+enum OptionItem { hapus }
 
 class MemberPage extends StatefulWidget {
   const MemberPage({super.key});
@@ -24,10 +20,7 @@ class _MemberPageState extends State<MemberPage> {
   // Sorting.
   int _currentSortColumn = 0;
   bool _isSortAsc = true;
-
-  // Select choice.
-  List<bool> _selected = [];
-
+  
   @override
   void initState()
   {
@@ -274,18 +267,6 @@ class MemberData extends DataTableSource {
           ),
           itemBuilder: (BuildContext context) {
             return [
-              PopupMenuItem <OptionItem> (
-                value: OptionItem.ubah,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: const [
-                    Icon(Icons.edit_note_outlined, color: Colors.blue,),
-                    SizedBox(width: 5,),
-                    Text('Ubah', style: TextStyle(color: Colors.blue)),
-                  ]
-                ),
-              ),
               PopupMenuItem <OptionItem> (
                 value: OptionItem.hapus,
                 child: Row(

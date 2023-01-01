@@ -1,8 +1,8 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:collection/collection.dart';
 import 'package:xyzlibrary/Navigation.dart';
+import 'package:xyzlibrary/bookapi.dart';
+import 'package:xyzlibrary/bookmodel.dart';
+import 'package:xyzlibrary/provider/favorite_provider.dart';
 
 class BookPage extends StatefulWidget {
   const BookPage({super.key});
@@ -12,70 +12,17 @@ class BookPage extends StatefulWidget {
 }
 
 class _BookPageState extends State<BookPage> {
-
-  final List<Map> _books = [
-    {
-      'isbn' : '333-444-5555-66-1',
-      'title' : 'Pemrograman Dasar',
-      'category' : 'Pemrograman',
-      'publisher' : 'Gramedia',
-      'author' : 'Techi',
-      'year' : '2011',
-      'total' : '112',
-    },
-    {
-      'isbn' : '333-444-5555-66-1',
-      'title' : 'Pemrograman Dasar',
-      'category' : 'Pemrograman',
-      'publisher' : 'Gramedia',
-      'author' : 'Techi',
-      'year' : '2011',
-      'total' : '112',
-    },
-    {
-      'isbn' : '333-444-5555-66-1',
-      'title' : 'Pemrograman Dasar',
-      'category' : 'Pemrograman',
-      'publisher' : 'Gramedia',
-      'author' : 'Techi',
-      'year' : '2011',
-      'total' : '112',
-    },
-    {
-      'isbn' : '333-444-5555-66-1',
-      'title' : 'Pemrograman Dasar',
-      'category' : 'Pemrograman',
-      'publisher' : 'Gramedia',
-      'author' : 'Techi',
-      'year' : '2011',
-      'total' : '112',
-    },
-    {
-      'isbn' : '333-444-5555-66-1',
-      'title' : 'Pemrograman Dasar',
-      'category' : 'Pemrograman',
-      'publisher' : 'Gramedia',
-      'author' : 'Techi',
-      'year' : '2011',
-      'total' : '112',
-    },
-  ];
-
-  // Table.
-  final DataTableSource _table = BookData();
+  late Future<List> response;
 
   // Sorting.
   int _currentSortColumn = 0;
   bool _isSortAsc = true;
 
-  // Select choice.
-  List<bool> _selected = [];
-
   @override
-  void initState()
-  {
+  void initState() {
+    response = fetchBooks();
     super.initState();
-    _selected = List<bool>.generate(_books.length, (index) => false);
+    // _selected = List<bool>.generate(_books.length, (index) => false);
   }
 
   @override
@@ -99,25 +46,52 @@ class _BookPageState extends State<BookPage> {
                   ],
                 )
               ),
-              TextButton(
-                  onPressed: (){
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => Navigation(
-                        page: DrawerSections.inputBook,
-                      )),
-                    );
-                  }, // Fill here for navigation.
-                  style: TextButton.styleFrom(backgroundColor: Colors.blue, padding: const EdgeInsets.all(16)),
-                  child: Row(
-                    children: const [
-                      Icon(Icons.add, color: Colors.white, size: 16,),
-                      SizedBox(
-                        width: 12,
-                      ),
-                      Text('Tambah Buku', style: TextStyle(color: Colors.white, fontSize: 16),)
-                    ],
+              Row(
+                children: [
+                  TextButton(
+                      onPressed: (){
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => Navigation(
+                            page: DrawerSections.inputBook,
+                          )),
+                        );
+                      }, // Fill here for navigation.
+                      style: TextButton.styleFrom(backgroundColor: Colors.blue, padding: const EdgeInsets.all(16)),
+                      child: Row(
+                        children: const [
+                          Icon(Icons.favorite_border, color: Colors.white, size: 16,),
+                          SizedBox(
+                            width: 12,
+                          ),
+                          Text('Favorit', style: TextStyle(color: Colors.white, fontSize: 16),)
+                        ],
+                      )
+                  ),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  TextButton(
+                      onPressed: (){
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => Navigation(
+                            page: DrawerSections.inputBook,
+                          )),
+                        );
+                      }, // Fill here for navigation.
+                      style: TextButton.styleFrom(backgroundColor: Colors.blue, padding: const EdgeInsets.all(16)),
+                      child: Row(
+                        children: const [
+                          Icon(Icons.add, color: Colors.white, size: 16,),
+                          SizedBox(
+                            width: 12,
+                          ),
+                          Text('Tambah Buku', style: TextStyle(color: Colors.white, fontSize: 16),)
+                        ],
+                      )
                   )
+                ],
               )
             ],
           ),
@@ -125,19 +99,40 @@ class _BookPageState extends State<BookPage> {
         Container(
           padding: const EdgeInsets.only(top: 10, bottom: 30, left: 16, right: 16),
           margin: const EdgeInsets.only(left: 12, right: 12),
-          child: PaginatedDataTable(
-              columns: _createColumn(),
-              source: _table,
-              sortAscending: _isSortAsc,
-              sortColumnIndex: _currentSortColumn,
-              showCheckboxColumn: true)
+          child: FutureBuilder(
+            future: response,
+            builder: (context, AsyncSnapshot snapshot) {
+              if (snapshot.hasData) {
+                return PaginatedDataTable(
+                  source: dataSource(snapshot.data),
+                  columns: _createColumn(),
+                  sortAscending: _isSortAsc,
+                  sortColumnIndex: _currentSortColumn,
+                  showCheckboxColumn: true
+                );
+              } else if (snapshot.hasError) {
+                return Text('${snapshot.error}');
+              }
+              return Center(
+               child: Row(
+                 mainAxisAlignment: MainAxisAlignment.center,
+                 children: const [
+                   CircularProgressIndicator()
+                 ],
+               )
+              );
+            }
+          )
         )
       ],)
     );
   }
+  DataTableSource dataSource(List<Books> bookList) =>
+      BookData(dataList: bookList);
+
   List<DataColumn> _createColumn() {
     return [
-      DataColumn(label: const Text("#", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)), onSort: _onSort),
+      DataColumn(label: const Text("#", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
       const DataColumn(label: Text("ISBN", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
       const DataColumn(label: Text("Judul", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
       const DataColumn(label: Text("Kategori", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
@@ -148,115 +143,49 @@ class _BookPageState extends State<BookPage> {
       const DataColumn(label: Text("", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
     ];
   }
-
-  List<DataRow> _createRows() {
-    int idx = 1;
-    return _books.mapIndexed((index, book) => DataRow(cells: [
-      DataCell(Text((index + 1).toString())),
-      DataCell(Text(book['isbn'])),
-      DataCell(Text(book['title'])),
-      DataCell(Text(book['category'])),
-      DataCell(Text(book['publisher'])),
-      DataCell(Text(book['author'])),
-      DataCell(Text(book['year'])),
-      DataCell(Text(book['total'])),
-    ],
-      selected: _selected[index],
-      onSelectChanged: (bool? selected) {
-        setState(() {
-          _selected[index] = selected!;
-        });
-      })).toList();
-  }
-
-  void _onSort(int column, bool ascending) {
-    setState(() {
-      _currentSortColumn = column;
-      if(_isSortAsc) {
-        _books.sort((a, b) => b['id'].compareTo(a['id']));
-      }
-      else {
-        _books.sort((a, b) => a['id'].compareTo(b['id']));
-      }
-
-      _isSortAsc = !_isSortAsc;
-    });
-  }
 }
 
 class BookData extends DataTableSource {
-
-  final List<Map> _books = [
-    {
-      'isbn' : '333-444-5555-66-1',
-      'title' : 'Pemrograman Dasar',
-      'category' : 'Pemrograman',
-      'publisher' : 'Gramedia',
-      'author' : 'Techi',
-      'year' : '2011',
-      'total' : '112',
-    },
-    {
-      'isbn' : '333-444-5555-66-1',
-      'title' : 'Pemrograman Dasar',
-      'category' : 'Pemrograman',
-      'publisher' : 'Gramedia',
-      'author' : 'Techi',
-      'year' : '2011',
-      'total' : '112',
-    },
-    {
-      'isbn' : '333-444-5555-66-1',
-      'title' : 'Pemrograman Dasar',
-      'category' : 'Pemrograman',
-      'publisher' : 'Gramedia',
-      'author' : 'Techi',
-      'year' : '2011',
-      'total' : '112',
-    },
-    {
-      'isbn' : '333-444-5555-66-1',
-      'title' : 'Pemrograman Dasar',
-      'category' : 'Pemrograman',
-      'publisher' : 'Gramedia',
-      'author' : 'Techi',
-      'year' : '2011',
-      'total' : '112',
-    },
-    {
-      'isbn' : '333-444-5555-66-1',
-      'title' : 'Pemrograman Dasar',
-      'category' : 'Pemrograman',
-      'publisher' : 'Gramedia',
-      'author' : 'Techi',
-      'year' : '2011',
-      'total' : '112',
-    },
-  ];
-
-  @override
-  DataRow? getRow(int index) {
-    return DataRow.byIndex(index: index, cells: [
-      DataCell(Text((index + 1).toString())),
-      DataCell(Text(_books[index]['isbn'])),
-      DataCell(Text(_books[index]['title'])),
-      DataCell(Text(_books[index]['category'])),
-      DataCell(Text(_books[index]['publisher'])),
-      DataCell(Text(_books[index]['author'])),
-      DataCell(Text(_books[index]['year'])),
-      DataCell(Text(_books[index]['total'])),
-      DataCell(PopupMenu()),
-    ]);
-  }
-
+  BookData({required this.dataList});
+  final List<Books> dataList;
+  
   @override
   bool get isRowCountApproximate => false;
-
   @override
-  int get rowCount => _books.length;
-
+  int get rowCount => dataList.length;
   @override
   int get selectedRowCount => 0;
+
+  @override
+  DataRow getRow(int index) {
+    return DataRow(
+      cells: [
+        DataCell(IconProvider(word: dataList[index].judul)),
+        DataCell(
+          Text(dataList[index].isbn),
+        ),
+        DataCell(
+          Text(dataList[index].judul),
+        ),
+        DataCell(
+          Text(dataList[index].kategori),
+        ),
+        DataCell(
+          Text(dataList[index].penerbit),
+        ),
+        DataCell(
+          Text(dataList[index].penulis),
+        ),
+        DataCell(
+          Text(dataList[index].tahun_terbit),
+        ),
+        DataCell(
+          Text(dataList[index].jumlah_buku),
+        ),
+        DataCell(PopupMenu()),
+      ],
+    );
+  }
 }
 
 class PopupMenu extends StatefulWidget {
@@ -326,6 +255,24 @@ class _PopupMenuState extends State<PopupMenu> {
           ),
         ];
       }
+    );
+  }
+}
+
+class IconProvider extends StatelessWidget {
+  String word;
+  IconProvider({super.key, required this.word});
+
+  @override
+  Widget build(BuildContext context) {
+    final provider = FavoriteProvider.of(context);
+    return IconButton(
+      onPressed: () {
+        provider.toggleFavorite(word);
+      },
+      icon: provider.isExist(word)
+          ? const Icon(Icons.favorite, color: Colors.red)
+          : const Icon(Icons.favorite_border),
     );
   }
 }
