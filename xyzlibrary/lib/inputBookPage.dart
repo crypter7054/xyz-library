@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class InputBookPage extends StatefulWidget {
   const InputBookPage({super.key});
@@ -33,6 +35,34 @@ class _InputBookPageState extends State<InputBookPage> {
     kategori.add(itm2);
     kategori.add(itm3);
 
+    //FUNGSI INSERT DATA KE SERVER
+    TextEditingController isbn=new TextEditingController();
+    TextEditingController judul=new TextEditingController();
+    TextEditingController penerbit=new TextEditingController();
+    TextEditingController penulis=new TextEditingController();
+    TextEditingController tahun_terbit=new TextEditingController();
+    TextEditingController jumlah_buku=new TextEditingController();
+    TextEditingController deskripsi=new TextEditingController();
+
+    Future<List> senddata() async {
+      final response = await http.post(Uri.parse("https://xyzlibrary.desainweb4c2.com/insert_buku.php"), body: {
+        "isbn": isbn.text,
+        "judul": judul.text,
+        "kategori": kategori_selected,
+        "penerbit": penerbit.text,
+        "penulis": penulis.text,
+        "tahun_terbit": tahun_terbit.text,
+        "jumlah_buku": jumlah_buku.text,
+        "deskripsi": deskripsi.text,
+      });
+
+      // the server response
+      if (response.statusCode == 201) {
+        return (json.decode(response.body));
+      } else {
+        throw Exception('failed!');
+      }
+    }
 
     return SingleChildScrollView(
       child: ConstrainedBox(
@@ -72,6 +102,7 @@ class _InputBookPageState extends State<InputBookPage> {
                   children: [
                     ListTile(
                       title: TextFormField(
+                        controller: isbn,
                         inputFormatters: [
                           FilteringTextInputFormatter.deny(RegExp('[a-zA-Z]')),
                         ],
@@ -83,6 +114,7 @@ class _InputBookPageState extends State<InputBookPage> {
                     ),
                     ListTile(
                       title: TextFormField(
+                        controller: judul,
                         decoration: const InputDecoration(
                           labelText: 'Judul',
                           border: OutlineInputBorder(),
@@ -98,16 +130,17 @@ class _InputBookPageState extends State<InputBookPage> {
                         value: kategori_selected,
                         items: kategori,
                         onChanged: (String? newValue) {
-                          setState(() {
+
                             if (newValue != null) {
                               kategori_selected = newValue;
                             }
-                          });
+
                         },
                       ),
                     ),
                     ListTile(
                       title: TextFormField(
+                        controller: penerbit,
                         decoration: const InputDecoration(
                           labelText: 'Penerbit',
                           border: OutlineInputBorder(),
@@ -116,6 +149,7 @@ class _InputBookPageState extends State<InputBookPage> {
                     ),
                     ListTile(
                       title: TextFormField(
+                        controller: penulis,
                         decoration: const InputDecoration(
                           labelText: 'Penulis',
                           border: OutlineInputBorder(),
@@ -124,6 +158,7 @@ class _InputBookPageState extends State<InputBookPage> {
                     ),
                     ListTile(
                       title: TextFormField(
+                        controller: tahun_terbit,
                         inputFormatters: [
                           FilteringTextInputFormatter.digitsOnly,
                         ],
@@ -135,6 +170,7 @@ class _InputBookPageState extends State<InputBookPage> {
                     ),
                     ListTile(
                       title: TextFormField(
+                        controller: jumlah_buku,
                         inputFormatters: [
                           FilteringTextInputFormatter.digitsOnly,
                         ],
@@ -146,6 +182,7 @@ class _InputBookPageState extends State<InputBookPage> {
                     ),
                     ListTile(
                       title: TextFormField(
+                        controller: deskripsi,
                         maxLines: null,
                         decoration: const InputDecoration(
                           labelText: 'Deskripsi',
@@ -191,6 +228,7 @@ class _InputBookPageState extends State<InputBookPage> {
                                   )
                               ),
                               onPressed: (){
+                                senddata();
                                 setState(() {
                                 });
                               },

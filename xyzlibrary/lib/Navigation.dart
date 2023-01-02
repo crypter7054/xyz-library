@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+
 import 'package:flutter/material.dart';
 
 import 'package:xyzlibrary/login.dart';
@@ -32,15 +35,30 @@ enum DrawerSections{
 
 class Navigation extends StatefulWidget {
   var page;
-  Navigation({super.key, this.page});
+  var id;
+  Navigation({super.key, this.page, this.id});
 
   @override
   State<Navigation> createState() => _NavigationState();
 }
 
 class _NavigationState extends State<Navigation> {
+
+  Future<List> deleteBuku() async {
+    final response = await http.post(Uri.parse("https://xyzlibrary.desainweb4c2.com/delete_buku.php"), body: {
+      "isbn": widget.id,
+    });
+    // the server response
+    if (response.statusCode == 201) {
+      return (json.decode(response.body));
+    } else {
+      throw Exception('failed!');
+    }
+  }
+
   var currentPage = DrawerSections.dashboard;
   int notInput = 0;
+
 
   @override
   Widget build(BuildContext context) {
@@ -73,6 +91,8 @@ class _NavigationState extends State<Navigation> {
         container = const DetailBookPage();
       } else if (widget.page == "updateBuku") {
         container = const UpdateBookPage();
+      }else if(widget.page == "deleteBuku"){
+        deleteBuku();
       }
     }
 

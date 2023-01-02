@@ -179,14 +179,17 @@ class BookData extends DataTableSource {
         DataCell(
           Text(dataList[index].jumlah_buku),
         ),
-        const DataCell(PopupMenu()),
+        DataCell(PopupMenu(isbn: dataList[index].isbn,)),
       ],
     );
   }
 }
 
 class PopupMenu extends StatefulWidget {
-  const PopupMenu({super.key});
+
+  const PopupMenu({super.key, required this.isbn});
+
+  final String isbn;
 
   @override
   State<PopupMenu> createState() => _PopupMenuState();
@@ -201,12 +204,12 @@ class _PopupMenuState extends State<PopupMenu> {
       onSelected: (value) {
         setState(() {
           selectedOption = value.toString();
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => Navigation(
-              page: value.toString(),
-            )),
-          );
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => Navigation(
+                page: value.toString(), id: widget.isbn,
+              )),
+            );
         });
       },
       shape: const RoundedRectangleBorder(
