@@ -10,8 +10,8 @@ class Dashboard extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text("Dashboard", style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold)),
-          Text("Coming Soon", style: TextStyle(fontSize: 20)),
+          Text("XYZ Library Dashboard", style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold)),
+          Text("Selamat Datang di XYZ Library", style: TextStyle(fontSize: 20)),
         ],
       ),
     );
