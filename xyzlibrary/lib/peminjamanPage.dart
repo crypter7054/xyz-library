@@ -1,8 +1,7 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:collection/collection.dart';
 import 'package:xyzlibrary/Navigation.dart';
+import 'package:xyzlibrary/peminjamanapi.dart';
+import 'package:xyzlibrary/peminjamanmodel.dart';
 
 class PeminjamanPage extends StatefulWidget {
   const PeminjamanPage({super.key});
@@ -12,22 +11,17 @@ class PeminjamanPage extends StatefulWidget {
 }
 
 class _PeminjamanPageState extends State<PeminjamanPage> {
-
-  // Table.
-  final DataTableSource _table = PeminjamanData();
+  late Future<List> response;
 
   // Sorting.
-  int _currentSortColumn = 0;
-  bool _isSortAsc = true;
-
-  // Select choice.
-  List<bool> _selected = [];
+  final int _currentSortColumn = 0;
+  final bool _isSortAsc = true;
 
   @override
   void initState()
   {
+    response = fetchPeminjaman();
     super.initState();
-    // _selected = List<bool>.generate(_books.length, (index) => false);
   }
 
   @override
@@ -40,16 +34,14 @@ class _PeminjamanPageState extends State<PeminjamanPage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Container(
-                    child: Row(
-                      children: const [
-                        Icon(Icons.bookmarks_outlined, color: Colors.blue, size: 50,),
-                        SizedBox(
-                          width: 12,
-                        ),
-                        Text('Daftar Peminjaman', style: TextStyle(color: Colors.blue, fontSize: 20),)
-                      ],
-                    )
+                Row(
+                  children: const [
+                    Icon(Icons.bookmarks_outlined, color: Colors.blue, size: 50,),
+                    SizedBox(
+                      width: 12,
+                    ),
+                    Text('Daftar Peminjaman', style: TextStyle(color: Colors.blue, fontSize: 20),)
+                  ],
                 ),
                 TextButton(
                     onPressed: (){
@@ -75,19 +67,39 @@ class _PeminjamanPageState extends State<PeminjamanPage> {
             ),
           ),
           Container(
-              padding: const EdgeInsets.only(top: 10, bottom: 30, left: 16, right: 16),
-              margin: const EdgeInsets.only(left: 12, right: 12),
-              child: PaginatedDataTable(
-                  columns: _createColumn(),
-                  columnSpacing: 40,
-                  source: _table,
-                  sortAscending: _isSortAsc,
-                  sortColumnIndex: _currentSortColumn,
-                  showCheckboxColumn: true)
+            padding: const EdgeInsets.only(top: 10, bottom: 30, left: 16, right: 16),
+            margin: const EdgeInsets.only(left: 12, right: 12),
+            child: FutureBuilder(
+              future: response,
+              builder: (context, AsyncSnapshot snapshot) {
+                if (snapshot.hasData) {
+                  return PaginatedDataTable(
+                    source: dataSource(snapshot.data),
+                    columns: _createColumn(),
+                    sortAscending: _isSortAsc,
+                    sortColumnIndex: _currentSortColumn,
+                    showCheckboxColumn: true
+                  );
+                } else if (snapshot.hasError) {
+                  return Text('${snapshot.error}');
+                }
+                return Center(
+                 child: Row(
+                   mainAxisAlignment: MainAxisAlignment.center,
+                   children: const [
+                     CircularProgressIndicator()
+                   ],
+                 )
+                );
+              }
+            )
           )
         ],)
     );
   }
+
+  DataTableSource dataSource(List<Peminjaman> peminjamanList) =>
+      PeminjamanData(dataList: peminjamanList);
 
   List<DataColumn> _createColumn() {
     return [
@@ -101,90 +113,54 @@ class _PeminjamanPageState extends State<PeminjamanPage> {
       const DataColumn(label: Text("")),
     ];
   }
-
-  /* List<DataRow> _createRows() {
-    int idx = 1;
-    return _books.mapIndexed((index, book) => DataRow(cells: [
-      DataCell(Text((index + 1).toString())),
-      DataCell(Text(book['title'])),
-      DataCell(Text(book['category'])),
-      DataCell(Text(book['isbn'])),
-      DataCell(Text(book['publisher'])),
-      DataCell(Text(book['year'])),
-      DataCell(Text(book['author'])),
-      DataCell(Text(book['total'])),
-    ],
-        selected: _selected[index],
-        onSelectChanged: (bool? selected) {
-          setState(() {
-            _selected[index] = selected!;
-          });
-        })).toList();
-  } */
-
-  /* void _onSort(int column, bool ascending) {
-    setState(() {
-      _currentSortColumn = column;
-      if(_isSortAsc) {
-        _books.sort((a, b) => b['id'].compareTo(a['id']));
-      }
-      else {
-        _books.sort((a, b) => a['id'].compareTo(b['id']));
-      }
-
-      _isSortAsc = !_isSortAsc;
-    });
-  } */
 }
 
 class PeminjamanData extends DataTableSource {
-  final List<Map> _books = [
-    {
-      'isbn' : '333-444-5555-66-1',
-      'title' : 'Pemrograman Dasar',
-      'person' : 'Techi',
-      'date_borrow' : '14-12-2022',
-      'date_return' : '20-12-2022',
-      'status' : 'dipinjam',
-    },
-    {
-      'isbn' : '333-444-5555-66-1',
-      'title' : 'Pemrograman Dasar',
-      'person' : 'Techi',
-      'date_borrow' : '19-12-2022',
-      'date_return' : '26-12-2022',
-      'status' : 'dikembalikan',
-    },
-  ];
-
-  @override
-  DataRow? getRow(int index) {
-    return DataRow.byIndex(index: index, cells: [
-      DataCell(Text((index + 1).toString())),
-      DataCell(Text(_books[index]['isbn'])),
-      DataCell(Text(_books[index]['title'])),
-      DataCell(Text(_books[index]['person'])),
-      DataCell(Text(_books[index]['date_borrow'])),
-      DataCell(Text(_books[index]['date_return'])),
-      DataCell(Text(_books[index]['status'])),
-      DataCell(
-        TextButton(
-          onPressed: () {},
-          child: Text("Dikembalikan", style: TextStyle(color: Colors.white),),
-          style: ButtonStyle(
-            backgroundColor: MaterialStatePropertyAll<Color>(Colors.blue)
-          ),
-        )
-      ),
-    ]);
-  }
+  PeminjamanData({required this.dataList});
+  final List<Peminjaman> dataList;
 
   @override
   bool get isRowCountApproximate => false;
-
   @override
-  int get rowCount => _books.length;
-
+  int get rowCount => dataList.length;
   @override
   int get selectedRowCount => 0;
+
+  @override
+  DataRow getRow(int index) {
+    return DataRow(
+      cells: [
+        DataCell(Text((index + 1).toString())),
+        DataCell(
+          Text(dataList[index].id_buku),
+        ),
+        DataCell(
+          Text(dataList[index].judul),
+        ),
+        DataCell(
+          Text(dataList[index].peminjam),
+        ),
+        DataCell(
+          Text(dataList[index].tanggal_peminjaman),
+        ),
+        DataCell(
+          Text(dataList[index].tanggal_pengembalian),
+        ),
+        if(dataList[index].status == "1")
+          DataCell(Text("Dikembalikan")),
+        if(dataList[index].status == "0")
+          DataCell(Text("Status")),
+        DataCell(IconButton(
+            icon: Icon(
+              Icons.check,
+              color: Colors.blue,
+              size: 16,
+            ),
+            onPressed: () {
+            },
+          ),
+        ),
+      ],
+    );
+  }
 }

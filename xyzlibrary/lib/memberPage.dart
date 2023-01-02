@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'Navigation.dart';
-
-enum OptionItem { hapus }
+import 'package:xyzlibrary/memberapi.dart';
+import 'package:xyzlibrary/membermodel.dart';
 
 class MemberPage extends StatefulWidget {
   const MemberPage({super.key});
@@ -11,21 +11,17 @@ class MemberPage extends StatefulWidget {
 }
 
 class _MemberPageState extends State<MemberPage> {
-
-  OptionItem? selectedOption;
-
-  // Table.
-  final DataTableSource _table = MemberData();
+  late Future<List> response;
 
   // Sorting.
-  int _currentSortColumn = 0;
-  bool _isSortAsc = true;
-  
+  final int _currentSortColumn = 0;
+  final bool _isSortAsc = true;
+
   @override
   void initState()
   {
+    response = fetchMembers();
     super.initState();
-    // _selected = List<bool>.generate(_books.length, (index) => false);
   }
 
   @override
@@ -38,16 +34,14 @@ class _MemberPageState extends State<MemberPage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Container(
-                    child: Row(
-                      children: const [
-                        Icon(Icons.group_outlined, color: Colors.blue, size: 50,),
-                        SizedBox(
-                          width: 12,
-                        ),
-                        Text('Daftar Anggota', style: TextStyle(color: Colors.blue, fontSize: 20),)
-                      ],
-                    )
+                Row(
+                  children: const [
+                    Icon(Icons.group_outlined, color: Colors.blue, size: 50,),
+                    SizedBox(
+                      width: 12,
+                    ),
+                    Text('Daftar Anggota', style: TextStyle(color: Colors.blue, fontSize: 20),)
+                  ],
                 ),
                 TextButton(
                     onPressed: (){
@@ -75,16 +69,37 @@ class _MemberPageState extends State<MemberPage> {
           Container(
               padding: const EdgeInsets.only(top: 10, bottom: 30, left: 16, right: 16),
               margin: const EdgeInsets.only(left: 12, right: 12),
-              child: PaginatedDataTable(
-                  columns: _createColumn(),
-                  source: _table,
-                  sortAscending: _isSortAsc,
-                  sortColumnIndex: _currentSortColumn,
-                  showCheckboxColumn: true)
+              child: FutureBuilder(
+              future: response,
+              builder: (context, AsyncSnapshot snapshot) {
+                if (snapshot.hasData) {
+                  return PaginatedDataTable(
+                    source: dataSource(snapshot.data),
+                    columns: _createColumn(),
+                    sortAscending: _isSortAsc,
+                    sortColumnIndex: _currentSortColumn,
+                    showCheckboxColumn: true
+                  );
+                } else if (snapshot.hasError) {
+                  return Text('${snapshot.error}');
+                }
+                return Center(
+                 child: Row(
+                   mainAxisAlignment: MainAxisAlignment.center,
+                   children: const [
+                     CircularProgressIndicator()
+                   ],
+                 )
+                );
+              }
+            )
           )
         ],)
     );
   }
+
+  DataTableSource dataSource(List<Members> memberList) =>
+      MemberData(dataList: memberList);
 
   List<DataColumn> _createColumn() {
     return [
@@ -98,200 +113,84 @@ class _MemberPageState extends State<MemberPage> {
       const DataColumn(label: Text("", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
     ];
   }
-
-  /* List<DataRow> _createRows() {
-    int idx = 1;
-    return _books.mapIndexed((index, book) => DataRow(cells: [
-      DataCell(Text((index + 1).toString())),
-      DataCell(Text(book['title'])),
-      DataCell(Text(book['category'])),
-      DataCell(Text(book['isbn'])),
-      DataCell(Text(book['publisher'])),
-      DataCell(Text(book['year'])),
-      DataCell(Text(book['author'])),
-      DataCell(Text(book['total'])),
-    ],
-        selected: _selected[index],
-        onSelectChanged: (bool? selected) {
-          setState(() {
-            _selected[index] = selected!;
-          });
-        })).toList();
-  } */
-
-  /* void _onSort(int column, bool ascending) {
-    setState(() {
-      _currentSortColumn = column;
-      if(_isSortAsc) {
-        _books.sort((a, b) => b['id'].compareTo(a['id']));
-      }
-      else {
-        _books.sort((a, b) => a['id'].compareTo(b['id']));
-      }
-
-      _isSortAsc = !_isSortAsc;
-    });
-  } */
 }
 
 class MemberData extends DataTableSource {
-  final List<Map> _books = [
-    {
-      'id' : '3212150909090002',
-      'name' : 'Techi',
-      'gender' : 'Laki-laki',
-      'address' : 'Jl. Setiabudhi No. 132',
-      'phone' : '081234567890',
-      'email' : 'techi@gmail.com',
-    },
-    {
-      'id' : '3212150909090003',
-      'name' : 'Techa',
-      'gender' : 'Perempuan',
-      'address' : 'Jl. Setiabudhi No. 133',
-      'phone' : '081234567891',
-      'email' : 'techa@gmail.com',
-    },
-    {
-      'id' : '3212150909090002',
-      'name' : 'Techi',
-      'gender' : 'Laki-laki',
-      'address' : 'Jl. Setiabudhi No. 132',
-      'phone' : '081234567890',
-      'email' : 'techi@gmail.com',
-    },
-    {
-      'id' : '3212150909090003',
-      'name' : 'Techa',
-      'gender' : 'Perempuan',
-      'address' : 'Jl. Setiabudhi No. 133',
-      'phone' : '081234567891',
-      'email' : 'techa@gmail.com',
-    },
-    {
-      'id' : '3212150909090002',
-      'name' : 'Techi',
-      'gender' : 'Laki-laki',
-      'address' : 'Jl. Setiabudhi No. 132',
-      'phone' : '081234567890',
-      'email' : 'techi@gmail.com',
-    },
-    {
-      'id' : '3212150909090003',
-      'name' : 'Techa',
-      'gender' : 'Perempuan',
-      'address' : 'Jl. Setiabudhi No. 133',
-      'phone' : '081234567891',
-      'email' : 'techa@gmail.com',
-    },
-    {
-      'id' : '3212150909090002',
-      'name' : 'Techi',
-      'gender' : 'Laki-laki',
-      'address' : 'Jl. Setiabudhi No. 132',
-      'phone' : '081234567890',
-      'email' : 'techi@gmail.com',
-    },
-    {
-      'id' : '3212150909090003',
-      'name' : 'Techa',
-      'gender' : 'Perempuan',
-      'address' : 'Jl. Setiabudhi No. 133',
-      'phone' : '081234567891',
-      'email' : 'techa@gmail.com',
-    },
-    {
-      'id' : '3212150909090002',
-      'name' : 'Techi',
-      'gender' : 'Laki-laki',
-      'address' : 'Jl. Setiabudhi No. 132',
-      'phone' : '081234567890',
-      'email' : 'techi@gmail.com',
-    },
-    {
-      'id' : '3212150909090003',
-      'name' : 'Techa',
-      'gender' : 'Perempuan',
-      'address' : 'Jl. Setiabudhi No. 133',
-      'phone' : '081234567891',
-      'email' : 'techa@gmail.com',
-    },
-    {
-      'id' : '3212150909090002',
-      'name' : 'Techi',
-      'gender' : 'Laki-laki',
-      'address' : 'Jl. Setiabudhi No. 132',
-      'phone' : '081234567890',
-      'email' : 'techi@gmail.com',
-    },
-    {
-      'id' : '3212150909090003',
-      'name' : 'Techa',
-      'gender' : 'Perempuan',
-      'address' : 'Jl. Setiabudhi No. 133',
-      'phone' : '081234567891',
-      'email' : 'techa@gmail.com',
-    },
-    {
-      'id' : '3212150909090002',
-      'name' : 'Techi',
-      'gender' : 'Laki-laki',
-      'address' : 'Jl. Setiabudhi No. 132',
-      'phone' : '081234567890',
-      'email' : 'techi@gmail.com',
-    },
-    {
-      'id' : '3212150909090003',
-      'name' : 'Techa',
-      'gender' : 'Perempuan',
-      'address' : 'Jl. Setiabudhi No. 133',
-      'phone' : '081234567891',
-      'email' : 'techa@gmail.com',
-    },
-  ];
-
-  @override
-  DataRow? getRow(int index) {
-    return DataRow.byIndex(index: index, cells: [
-      DataCell(Text((index + 1).toString())),
-      DataCell(Text(_books[index]['id'])),
-      DataCell(Text(_books[index]['name'])),
-      DataCell(Text(_books[index]['gender'])),
-      DataCell(Text(_books[index]['address'])),
-      DataCell(Text(_books[index]['phone'])),
-      DataCell(Text(_books[index]['email'])),
-      DataCell(
-        PopupMenuButton<OptionItem>(
-          shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(6.0))
-          ),
-          itemBuilder: (BuildContext context) {
-            return [
-              PopupMenuItem <OptionItem> (
-                value: OptionItem.hapus,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: const [
-                    Icon(Icons.delete_outlined, color: Colors.red,),
-                    SizedBox(width: 5,),
-                    Text('Hapus', style: TextStyle(color: Colors.red)),
-                  ]
-                ),
-              ),
-            ];
-          }
-        )
-      ),
-    ]);
-  }
+  MemberData({required this.dataList});
+  final List<Members> dataList;
 
   @override
   bool get isRowCountApproximate => false;
-
   @override
-  int get rowCount => _books.length;
-
+  int get rowCount => dataList.length;
   @override
   int get selectedRowCount => 0;
+
+  @override
+  DataRow getRow(int index) {
+    return DataRow(
+      cells: [
+        DataCell(Text((index + 1).toString())),
+        DataCell(
+          Text(dataList[index].id),
+        ),
+        DataCell(
+          Text(dataList[index].nama_lengkap),
+        ),
+        DataCell(
+          Text(dataList[index].jenis_kelamin),
+        ),
+        DataCell(
+          Text(dataList[index].alamat),
+        ),
+        DataCell(
+          Text(dataList[index].no_telp),
+        ),
+        DataCell(
+          Text(dataList[index].email),
+        ),
+        const DataCell(PopupMenu()),
+      ],
+    );
+  }
+}
+
+class PopupMenu extends StatefulWidget {
+  const PopupMenu({super.key});
+
+  @override
+  State<PopupMenu> createState() => _PopupMenuState();
+}
+
+class _PopupMenuState extends State<PopupMenu> {
+  var selectedOption = '';
+
+  @override
+  Widget build(BuildContext context) {
+    return PopupMenuButton(
+      onSelected: (value) {
+        setState(() {
+        });
+      },
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(6.0))
+      ),
+      itemBuilder: (BuildContext context) {
+        return [
+          PopupMenuItem(
+            value: "deleteMember",
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: const [
+                Icon(Icons.delete_outlined, color: Colors.red,),
+                SizedBox(width: 5,),
+                Text('Hapus', style: TextStyle(color: Colors.red)),
+              ]
+            ),
+          ),
+        ];
+      }
+    );
+  }
 }

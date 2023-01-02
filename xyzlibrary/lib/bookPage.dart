@@ -15,14 +15,13 @@ class _BookPageState extends State<BookPage> {
   late Future<List> response;
 
   // Sorting.
-  int _currentSortColumn = 0;
-  bool _isSortAsc = true;
+  final int _currentSortColumn = 0;
+  final bool _isSortAsc = true;
 
   @override
   void initState() {
     response = fetchBooks();
     super.initState();
-    // _selected = List<bool>.generate(_books.length, (index) => false);
   }
 
   @override
@@ -35,16 +34,14 @@ class _BookPageState extends State<BookPage> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Container(
-                child: Row(
-                  children: const [
-                    Icon(Icons.menu_book_outlined, color: Colors.blue, size: 50,),
-                    SizedBox(
-                      width: 12,
-                    ),
-                    Text('Daftar Buku', style: TextStyle(color: Colors.blue, fontSize: 20),)
-                  ],
-                )
+              Row(
+                children: const [
+                  Icon(Icons.menu_book_outlined, color: Colors.blue, size: 50,),
+                  SizedBox(
+                    width: 12,
+                  ),
+                  Text('Daftar Buku', style: TextStyle(color: Colors.blue, fontSize: 20),)
+                ],
               ),
               Row(
                 children: [
@@ -53,7 +50,7 @@ class _BookPageState extends State<BookPage> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => Navigation(
-                            page: DrawerSections.inputBook,
+                            page: DrawerSections.favorite,
                           )),
                         );
                       }, // Fill here for navigation.
@@ -68,7 +65,7 @@ class _BookPageState extends State<BookPage> {
                         ],
                       )
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 5,
                   ),
                   TextButton(
@@ -132,7 +129,7 @@ class _BookPageState extends State<BookPage> {
 
   List<DataColumn> _createColumn() {
     return [
-      DataColumn(label: const Text("#", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
+      const DataColumn(label: Text("#", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
       const DataColumn(label: Text("ISBN", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
       const DataColumn(label: Text("Judul", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
       const DataColumn(label: Text("Kategori", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
@@ -182,7 +179,7 @@ class BookData extends DataTableSource {
         DataCell(
           Text(dataList[index].jumlah_buku),
         ),
-        DataCell(PopupMenu()),
+        const DataCell(PopupMenu()),
       ],
     );
   }

@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:xyzlibrary/aboutPage.dart';
-import 'package:xyzlibrary/bookPage.dart';
-import 'package:xyzlibrary/dashboard.dart';
-import 'package:xyzlibrary/detailBookPage.dart';
-import 'package:xyzlibrary/inputBookPage.dart';
-import 'package:xyzlibrary/inputPeminjamanPage.dart';
-import 'package:xyzlibrary/inputMemberPage.dart';
+
 import 'package:xyzlibrary/login.dart';
-import 'package:xyzlibrary/peminjamanPage.dart';
-import 'package:xyzlibrary/memberPage.dart';
+import 'package:xyzlibrary/dashboard.dart';
+
+import 'package:xyzlibrary/bookPage.dart';
+import 'package:xyzlibrary/inputBookPage.dart';
 import 'package:xyzlibrary/updateBookPage.dart';
+import 'package:xyzlibrary/detailBookPage.dart';
+import 'package:xyzlibrary/favoritePage.dart';
+
+import 'package:xyzlibrary/peminjamanPage.dart';
+import 'package:xyzlibrary/inputPeminjamanPage.dart';
+
+import 'package:xyzlibrary/memberPage.dart';
+import 'package:xyzlibrary/inputMemberPage.dart';
+
+import 'package:xyzlibrary/aboutPage.dart';
 
 enum DrawerSections{
   dashboard,
@@ -20,7 +26,8 @@ enum DrawerSections{
   inputPeminjaman,
   member,
   inputMember,
-  about
+  about,
+  favorite
 }
 
 class Navigation extends StatefulWidget {
@@ -60,6 +67,8 @@ class _NavigationState extends State<Navigation> {
         container = const InputMemberPage();
       } else if (widget.page == DrawerSections.updateBook) {
         container = const UpdateBookPage();
+      } else if (widget.page == DrawerSections.favorite) {
+        container = const FavoritePage();
       } else if (widget.page == "detailBuku") {
         container = const DetailBookPage();
       } else if (widget.page == "updateBuku") {
@@ -111,7 +120,6 @@ class _NavigationState extends State<Navigation> {
                           fontWeight: FontWeight.w100,
                         ),
                     ),
-
                   ],
                 )
               ),
