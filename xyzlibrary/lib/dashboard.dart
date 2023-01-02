@@ -9,7 +9,7 @@ class Dashboard extends StatelessWidget {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [
+        children: const [
           Text("XYZ Library Dashboard", style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold)),
           Text("Selamat Datang di XYZ Library", style: TextStyle(fontSize: 20)),
         ],
